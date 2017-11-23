@@ -1,11 +1,13 @@
-FROM alpine:latest
+FROM alpine:3.6
+
+MAINTAINER k4zuki
 
 RUN apk --no-cache add -U make nodejs-npm curl openssl gcc libc-dev openjdk8 graphviz && \
     mkdir -p /workspace
 
 WORKDIR /workspace
 
-RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev bash
+RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev bash git
 
 RUN npm install -g phantomjs-prebuilt wavedrom-cli \
       fs-extra yargs onml bit-field
@@ -59,8 +61,20 @@ RUN wget --no-check-certificate $CROSSREF_URL/$CROSSREF_ARCHIVE && \
     tar zxf $CROSSREF_ARCHIVE && \
     mv pandoc-crossref /usr/local/bin/
 
-RUN apk del *-dev *-doc
+
+RUN wget -c https://github.com/tcnksm/ghr/releases/download/v0.5.4/ghr_v0.5.4_linux_amd64.zip && \
+    unzip ghr_v0.5.4_linux_amd64.zip && \
+    mv ghr /usr/local/bin/ && \
+    rm ghr_v0.5.4_linux_amd64.zip
+
+WORKDIR /var
+ENV PANDOC_MISC_VERSION 0.0.8
+RUN git clone --recursive --depth=1 -b $PANDOC_MISC_VERSION https://github.com/K4zuki/pandoc_misc.git
+RUN apk del *-dev *-doc git
+
+WORKDIR /workspace
 
 VOLUME ["/workspace"]
 
+ENV TZ JST
 CMD ["bash"]
