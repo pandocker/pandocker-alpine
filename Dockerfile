@@ -5,7 +5,7 @@ RUN apk --no-cache add -U make nodejs-npm curl openssl gcc libc-dev openjdk8 gra
 
 WORKDIR /workspace
 
-RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev
+RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev bash
 
 RUN npm install -g phantomjs-prebuilt wavedrom-cli \
       fs-extra yargs onml bit-field
@@ -60,3 +60,7 @@ RUN wget --no-check-certificate $CROSSREF_URL/$CROSSREF_ARCHIVE && \
     mv pandoc-crossref /usr/local/bin/
 
 RUN apk del *-dev *-doc
+
+VOLUME ["/workspace"]
+
+CMD ["bash"]
