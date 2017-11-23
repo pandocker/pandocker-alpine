@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk --no-cache add -U make nodejs-npm curl openssl gcc libc-dev openjdk graphviz && \
+RUN apk --no-cache add -U make nodejs-npm curl openssl gcc libc-dev openjdk8 graphviz && \
     mkdir -p /workspace
 
 WORKDIR /workspace
