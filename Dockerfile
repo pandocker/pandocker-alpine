@@ -1,24 +1,9 @@
 FROM alpine:latest
 
-ENV PANDOC_VERSION 2.0.3
-ENV PANDOC_ARCHIVE pandoc-$PANDOC_VERSION
-ENV PANDOC_URL https://github.com/jgm/pandoc/releases/download/$PANDOC_VERSION/
-
-ENV CROSSREF_VERSION v0.3.0.0-beta3
-ENV CROSSREF_ARCHIVE linux-ghc8-pandoc-2-0.tar.gz
-ENV CROSSREF_URL https://github.com/lierdakil/pandoc-crossref/releases/download/$CROSSREF_VERSION
-
-RUN apk --no-cache add -U make nodejs-npm curl openssl gcc libc-dev && \
+RUN apk --no-cache add -U make nodejs-npm curl openssl gcc libc-dev openjdk graphviz && \
     mkdir -p /workspace
 
 WORKDIR /workspace
-
-RUN wget --no-check-certificate $PANDOC_URL/$PANDOC_ARCHIVE-linux.tar.gz && \
-    tar zxf $PANDOC_ARCHIVE-linux.tar.gz && cp $PANDOC_ARCHIVE/bin/* /usr/local/bin/ && \
-
-    wget --no-check-certificate $CROSSREF_URL/$CROSSREF_ARCHIVE && \
-    tar zxf $CROSSREF_ARCHIVE && \
-    mv pandoc-crossref /usr/local/bin/
 
 RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev
 
@@ -52,5 +37,26 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/c
 
     ln -s /usr/bin/mktexlsr /usr/bin/mktexlsr.pl && \
     mktexlsr
+
+
+ENV PLANTUML_VERSION 1.2017.18
+ENV PLANTUML_DOWNLOAD_URL https://sourceforge.net/projects/plantuml/files/plantuml.$PLANTUML_VERSION.jar/download
+RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/plantuml.jar && \
+    echo "#!/bin/bash" > /usr/local/bin/plantuml && \
+    echo "java -jar /usr/local/plantuml.jar \$@" >> /usr/local/bin/plantuml && \
+    chmod +x /usr/local/bin/plantuml
+
+ENV PANDOC_VERSION 2.0.3
+ENV PANDOC_ARCHIVE pandoc-$PANDOC_VERSION
+ENV PANDOC_URL https://github.com/jgm/pandoc/releases/download/$PANDOC_VERSION/
+RUN wget --no-check-certificate $PANDOC_URL/$PANDOC_ARCHIVE-linux.tar.gz && \
+tar zxf $PANDOC_ARCHIVE-linux.tar.gz && cp $PANDOC_ARCHIVE/bin/* /usr/local/bin/
+
+ENV CROSSREF_VERSION v0.3.0.0-beta3
+ENV CROSSREF_ARCHIVE linux-ghc8-pandoc-2-0.tar.gz
+ENV CROSSREF_URL https://github.com/lierdakil/pandoc-crossref/releases/download/$CROSSREF_VERSION
+RUN wget --no-check-certificate $CROSSREF_URL/$CROSSREF_ARCHIVE && \
+    tar zxf $CROSSREF_ARCHIVE && \
+    mv pandoc-crossref /usr/local/bin/
 
 RUN apk del *-dev *-doc
