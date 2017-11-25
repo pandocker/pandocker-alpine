@@ -7,7 +7,8 @@ RUN apk --no-cache add -U make nodejs-npm curl openssl gcc libc-dev openjdk8 gra
 
 WORKDIR /workspace
 
-RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev bash git
+RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev \
+      musl-dev bash git
 
 RUN npm install -g phantomjs-prebuilt wavedrom-cli \
       fs-extra yargs onml bit-field
@@ -40,6 +41,8 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/c
     ln -s /usr/bin/mktexlsr /usr/bin/mktexlsr.pl && \
     mktexlsr
 
+RUN wget -c https://github.com/logological/gpp/releases/download/2.25/gpp-2.25.tar.bz2 && \
+    tar jxf gpp-2.25.tar.bz2 && cd gpp-2.25 && ./configure && make && cp src/gpp /usr/bin/
 
 ENV PLANTUML_VERSION 1.2017.18
 ENV PLANTUML_DOWNLOAD_URL https://sourceforge.net/projects/plantuml/files/plantuml.$PLANTUML_VERSION.jar/download
@@ -60,7 +63,6 @@ ENV CROSSREF_URL https://github.com/lierdakil/pandoc-crossref/releases/download/
 RUN wget --no-check-certificate $CROSSREF_URL/$CROSSREF_ARCHIVE && \
     tar zxf $CROSSREF_ARCHIVE && \
     mv pandoc-crossref /usr/local/bin/
-
 
 RUN wget -c https://github.com/tcnksm/ghr/releases/download/v0.5.4/ghr_v0.5.4_linux_amd64.zip && \
     unzip ghr_v0.5.4_linux_amd64.zip && \
