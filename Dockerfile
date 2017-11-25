@@ -33,7 +33,7 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/m
       pip3 install pyyaml
 # zziplib (found in edge/community repository) is a dependency to texlive-luatex
 RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/community \
-    zziplib && \
+    zziplib && \ # ghc cabal
 
     apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/testing \
     texlive-xetex && \
@@ -51,7 +51,7 @@ RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/plantuml.jar && \
     echo "java -jar /usr/local/plantuml.jar \$@" >> /usr/local/bin/plantuml && \
     chmod +x /usr/local/bin/plantuml
 
-ENV PANDOC_VERSION 2.0.3
+ENV PANDOC_VERSION 2.0.1.1
 ENV PANDOC_ARCHIVE pandoc-$PANDOC_VERSION
 ENV PANDOC_URL https://github.com/jgm/pandoc/releases/download/$PANDOC_VERSION/
 RUN wget --no-check-certificate $PANDOC_URL/$PANDOC_ARCHIVE-linux.tar.gz && \
@@ -60,6 +60,7 @@ tar zxf $PANDOC_ARCHIVE-linux.tar.gz && cp $PANDOC_ARCHIVE/bin/* /usr/local/bin/
 ENV CROSSREF_VERSION v0.3.0.0-beta3
 ENV CROSSREF_ARCHIVE linux-ghc8-pandoc-2-0.tar.gz
 ENV CROSSREF_URL https://github.com/lierdakil/pandoc-crossref/releases/download/$CROSSREF_VERSION
+# RUN cabal update && cabal install pandoc-cross
 RUN wget --no-check-certificate $CROSSREF_URL/$CROSSREF_ARCHIVE && \
     tar zxf $CROSSREF_ARCHIVE && \
     mv pandoc-crossref /usr/local/bin/
