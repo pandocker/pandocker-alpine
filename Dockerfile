@@ -2,7 +2,7 @@ FROM alpine:3.6
 
 MAINTAINER k4zuki
 
-RUN apk --no-cache add -U make nodejs-npm curl openssl gcc libc-dev openjdk8 graphviz && \
+RUN apk --no-cache add -U make librsvg nodejs-npm curl openssl gcc libc-dev openjdk8 graphviz && \
     mkdir -p /workspace
 
 WORKDIR /workspace
