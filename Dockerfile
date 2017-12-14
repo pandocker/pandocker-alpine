@@ -40,7 +40,7 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/c
     zziplib && \
 
     apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/testing \
-    texlive && \
+    texlive-xetex && \
 
     ln -s /usr/bin/mktexlsr /usr/bin/mktexlsr.pl && \
     mktexlsr
