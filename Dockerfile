@@ -2,29 +2,31 @@ FROM alpine:3.6
 
 MAINTAINER k4zuki
 
-RUN apk --no-cache add -U make librsvg nodejs-npm curl openssl gcc libc-dev openjdk8 graphviz && \
-    mkdir -p /workspace
+RUN apk --no-cache add -U make librsvg nodejs-npm curl openssl gcc libc-dev libc6-compat openjdk8 graphviz && \
+    mkdir -p /workspace && \
+    mkdir -p /usr/share/texlive/texmf-dist/tex/latex/BXptool/ && \
+    mkdir -p /usr/local/share/fonts
+COPY src/sourcecodepro/*.ttf /usr/local/share/fonts/
+COPY src/sourcesanspro/*.ttf /usr/local/share/fonts/
+COPY src/BXptool-0.4/bx*.sty src/BXptool-0.4/bx*.def /usr/share/texlive/texmf-dist/tex/latex/BXptool/
+COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 
 WORKDIR /workspace
 
 RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev \
       musl-dev bash git
 
-RUN npm install -g phantomjs-prebuilt wavedrom-cli \
+RUN set -ex \
+  && apk add --no-cache --virtual .build-deps ca-certificates openssl \
+  && wget -qO- "https://github.com/dustinblackman/phantomized/releases/download/2.1.1/dockerized-phantomjs.tar.gz" | tar xz -C / \
+  && npm install -g phantomjs \
+  && apk del .build-deps
+
+RUN npm install -g wavedrom-cli \
       fs-extra yargs onml bit-field
 
-RUN mkdir -p /usr/share/texlive/texmf-dist/tex/latex/BXptool/ && \
-      wget -c https://github.com/zr-tex8r/BXptool/archive/v0.4.zip && \
-      unzip v0.4.zip && \
-      cp BXptool-0.4/bx*.sty BXptool-0.4/bx*.def /usr/share/texlive/texmf-dist/tex/latex/BXptool/ && \
-    mkdir -p /usr/local/share/fonts && \
-    wget -c https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip && \
-      unzip 1.050R-it.zip && cp source-code-pro-2.030R-ro-1.050R-it/TTF/SourceCodePro-*.ttf /usr/local/share/fonts/ && \
-    wget -c https://github.com/adobe-fonts/source-sans-pro/archive/2.020R-ro/1.075R-it.zip && \
-      unzip 1.075R-it.zip && cp source-sans-pro-2.020R-ro-1.075R-it/TTF/SourceSansPro-*.ttf /usr/local/share/fonts/
-
 # dependencies for texlive
-RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/main \
+RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/main \
     poppler harfbuzz-icu py3-libxml2 && \
       pip3 install \
       pantable csv2table \
@@ -34,11 +36,11 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/m
       pip3 install pyyaml
 # zziplib (found in edge/community repository) is a dependency to texlive-luatex
 # ghc & cabal also
-RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/community \
+RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/community \
     zziplib && \
 
     apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/testing \
-    texlive-xetex && \
+    texlive && \
 
     ln -s /usr/bin/mktexlsr /usr/bin/mktexlsr.pl && \
     mktexlsr
@@ -46,26 +48,27 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/c
 RUN wget -c https://github.com/logological/gpp/releases/download/2.25/gpp-2.25.tar.bz2 && \
     tar jxf gpp-2.25.tar.bz2 && cd gpp-2.25 && ./configure && make && cp src/gpp /usr/bin/
 
+RUN apk add openjdk8-jre fontconfig ttf-dejavu
 ENV PLANTUML_VERSION 1.2017.18
 ENV PLANTUML_DOWNLOAD_URL https://sourceforge.net/projects/plantuml/files/plantuml.$PLANTUML_VERSION.jar/download
 RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/plantuml.jar && \
     echo "#!/bin/bash" > /usr/local/bin/plantuml && \
-    echo "java -jar /usr/local/plantuml.jar \$@" >> /usr/local/bin/plantuml && \
-    chmod +x /usr/local/bin/plantuml
+    echo "java -jar /usr/local/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
+    chmod +x /usr/local/bin/plantuml && plantuml -v
 
-ENV PANDOC_VERSION 2.0.1.1
+ENV PANDOC_VERSION 2.0.5
 ENV PANDOC_ARCHIVE pandoc-$PANDOC_VERSION
 ENV PANDOC_URL https://github.com/jgm/pandoc/releases/download/$PANDOC_VERSION/
 RUN wget --no-check-certificate $PANDOC_URL/$PANDOC_ARCHIVE-linux.tar.gz && \
-tar zxf $PANDOC_ARCHIVE-linux.tar.gz && cp $PANDOC_ARCHIVE/bin/* /usr/local/bin/
+    tar zxf $PANDOC_ARCHIVE-linux.tar.gz && cp $PANDOC_ARCHIVE/bin/* /usr/local/bin/
 
-ENV CROSSREF_VERSION v0.3.0.0
-ENV CROSSREF_ARCHIVE linux-ghc8-pandoc-2-0.tar.gz
-ENV CROSSREF_URL https://github.com/lierdakil/pandoc-crossref/releases/download/$CROSSREF_VERSION
-# RUN cabal update && cabal install pandoc-cross
-RUN wget --no-check-certificate $CROSSREF_URL/$CROSSREF_ARCHIVE && \
-    tar zxf $CROSSREF_ARCHIVE && \
-    mv pandoc-crossref /usr/local/bin/
+# ENV CROSSREF_VERSION v0.3.0.0
+# ENV CROSSREF_ARCHIVE linux-ghc8-pandoc-2-0.tar.gz
+# ENV CROSSREF_URL https://github.com/lierdakil/pandoc-crossref/releases/download/$CROSSREF_VERSION
+# # RUN cabal update && cabal install pandoc-cross
+# RUN wget --no-check-certificate $CROSSREF_URL/$CROSSREF_ARCHIVE && \
+#     tar zxf $CROSSREF_ARCHIVE && \
+#     mv pandoc-crossref /usr/local/bin/
 
 RUN wget -c https://github.com/tcnksm/ghr/releases/download/v0.5.4/ghr_v0.5.4_linux_amd64.zip && \
     unzip ghr_v0.5.4_linux_amd64.zip && \
@@ -73,7 +76,7 @@ RUN wget -c https://github.com/tcnksm/ghr/releases/download/v0.5.4/ghr_v0.5.4_li
     rm ghr_v0.5.4_linux_amd64.zip
 
 WORKDIR /var
-ENV PANDOC_MISC_VERSION 0.0.11
+ENV PANDOC_MISC_VERSION 0.0.12
 RUN git clone --recursive --depth=1 -b $PANDOC_MISC_VERSION https://github.com/K4zuki/pandoc_misc.git
 RUN apk del *-doc
 
