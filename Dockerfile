@@ -18,8 +18,8 @@ RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev
 
 RUN set -ex \
   && apk add --no-cache --virtual .build-deps ca-certificates openssl \
-  && wget -qO- "https://github.com/dustinblackman/phantomized/releases/download/2.1.1/dockerized-phantomjs.tar.gz" | tar xz -C / \
-  && npm install -g phantomjs \
+  && curl -Ls "https://github.com/dustinblackman/phantomized/releases/download/2.1.1a/dockerized-phantomjs.tar.gz" | tar xz -C / \
+  && npm install -g phantomjs-prebuilt \
   && apk del .build-deps
 
 RUN npm install -g wavedrom-cli \
