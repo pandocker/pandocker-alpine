@@ -32,7 +32,7 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/m
       pantable csv2table \
       six pandoc-imagine \
       svgutils \
-      pandoc-pandocker-filters && \
+      git+https://github.com/K4zuki/pandocker-filters.git && \
       pip3 install pyyaml
 # zziplib (found in edge/community repository) is a dependency to texlive-luatex
 # ghc & cabal also
