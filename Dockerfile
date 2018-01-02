@@ -33,7 +33,7 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/m
       six pandoc-imagine \
       svgutils \
       git+https://github.com/K4zuki/pandocker-filters.git && \
-      pip3 install pyyaml
+      pip3 install pyyaml pandoc-latex-barcode
 # zziplib (found in edge/community repository) is a dependency to texlive-luatex
 # ghc & cabal also
 RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/community \
