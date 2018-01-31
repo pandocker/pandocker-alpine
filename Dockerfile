@@ -34,7 +34,8 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/m
       svgutils \
       git+https://github.com/K4zuki/wavedrompy.git \
       git+https://github.com/K4zuki/bitfieldpy.git \
-      git+https://github.com/K4zuki/pandocker-filters.git && \
+      git+https://github.com/K4zuki/pandocker-filters.git \
+      git+https://github.com/K4zuki/removalnotes.git && \
       pip3 install pyyaml git+https://github.com/daamien/pandoc-latex-barcode
 # zziplib (found in edge/community repository) is a dependency to texlive-luatex
 # ghc & cabal also
@@ -78,7 +79,7 @@ RUN wget -c https://github.com/tcnksm/ghr/releases/download/v0.5.4/ghr_v0.5.4_li
     rm ghr_v0.5.4_linux_amd64.zip
 
 WORKDIR /var
-ENV PANDOC_MISC_VERSION 0.0.17
+ENV PANDOC_MISC_VERSION 0.0.18
 RUN git clone --recursive --depth=1 -b $PANDOC_MISC_VERSION https://github.com/K4zuki/pandoc_misc.git
 RUN apk del *-doc
 
