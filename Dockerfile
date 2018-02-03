@@ -3,7 +3,7 @@ FROM alpine:3.6
 MAINTAINER k4zuki
 
 RUN apk --no-cache add -U make librsvg nodejs-npm curl openssl gcc libc-dev libc6-compat openjdk8 graphviz && \
-    mkdir -p /workspace && \
+    mkdir -p /workdir && \
     mkdir -p /usr/share/texlive/texmf-dist/tex/latex/BXptool/ && \
     mkdir -p /usr/local/share/fonts
 COPY src/sourcecodepro/*.ttf /usr/local/share/fonts/
@@ -11,19 +11,19 @@ COPY src/sourcesanspro/*.ttf /usr/local/share/fonts/
 COPY src/BXptool-0.4/bx*.sty src/BXptool-0.4/bx*.def /usr/share/texlive/texmf-dist/tex/latex/BXptool/
 COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 
-WORKDIR /workspace
+WORKDIR /workdir
 
 RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev \
       musl-dev bash git
 
-RUN set -ex \
-  && apk add --no-cache --virtual .build-deps ca-certificates openssl \
-  && curl -Ls "https://github.com/dustinblackman/phantomized/releases/download/2.1.1a/dockerized-phantomjs.tar.gz" | tar xz -C / \
-  && npm install -g phantomjs-prebuilt \
-  && apk del .build-deps
-
-RUN npm install -g wavedrom-cli \
-      fs-extra yargs onml bit-field
+# RUN set -ex \
+#   && apk add --no-cache --virtual .build-deps ca-certificates openssl \
+#   && curl -Ls "https://github.com/dustinblackman/phantomized/releases/download/2.1.1a/dockerized-phantomjs.tar.gz" | tar xz -C / \
+#   && npm install -g phantomjs-prebuilt \
+#   && apk del .build-deps
+#
+# RUN npm install -g wavedrom-cli \
+#       fs-extra yargs onml bit-field
 
 # dependencies for texlive
 RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/main \
@@ -84,9 +84,9 @@ ENV PANDOC_MISC_VERSION 0.0.18
 RUN git clone --recursive --depth=1 -b $PANDOC_MISC_VERSION https://github.com/K4zuki/pandoc_misc.git
 RUN apk del *-doc
 
-WORKDIR /workspace
+WORKDIR /workdir
 
-VOLUME ["/workspace"]
+VOLUME ["/workdir"]
 
 ENV TZ JST
 CMD ["bash"]
