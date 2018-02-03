@@ -32,11 +32,12 @@ RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/m
       pantable csv2table \
       six pandoc-imagine \
       svgutils \
+      pyyaml \
       git+https://github.com/K4zuki/wavedrompy.git \
       git+https://github.com/K4zuki/bitfieldpy.git \
       git+https://github.com/K4zuki/pandocker-filters.git \
-      git+https://github.com/K4zuki/removalnotes.git && \
-      pip3 install pyyaml git+https://github.com/daamien/pandoc-latex-barcode
+      git+https://github.com/pandocker/removalnotes.git \
+      git+https://github.com/daamien/pandoc-latex-barcode
 # zziplib (found in edge/community repository) is a dependency to texlive-luatex
 # ghc & cabal also
 RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/community \
