@@ -2,7 +2,7 @@ FROM alpine:3.6
 
 MAINTAINER k4zuki
 
-RUN apk --no-cache add -U make librsvg nodejs-npm curl openssl gcc libc-dev libc6-compat openjdk8 graphviz && \
+RUN apk --no-cache add -U make librsvg curl openssl gcc libc-dev libc6-compat openjdk8 graphviz && \
     mkdir -p /workdir && \
     mkdir -p /usr/share/texlive/texmf-dist/tex/latex/BXptool/ && \
     mkdir -p /usr/local/share/fonts
