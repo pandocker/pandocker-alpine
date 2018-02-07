@@ -88,5 +88,5 @@ WORKDIR /workdir
 
 VOLUME ["/workdir"]
 
-ENV TZ JST
+ENV TZ JST-9
 CMD ["bash"]
