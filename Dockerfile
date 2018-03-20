@@ -15,9 +15,7 @@ RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev
       musl-dev bash git
 
 # dependencies for texlive
-RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/main \
-    poppler harfbuzz-icu && \
-      pip3 install \
+RUN pip3 install \
       pantable csv2table \
       six pandoc-imagine \
       svgutils \
