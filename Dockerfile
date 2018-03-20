@@ -60,7 +60,7 @@ RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/plantuml.jar && \
     echo "java -jar /usr/local/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
     chmod +x /usr/local/bin/plantuml && plantuml -v
 
-ENV PANDOC_VERSION 2.0.5
+ENV PANDOC_VERSION 2.1.3
 ENV PANDOC_ARCHIVE pandoc-$PANDOC_VERSION
 ENV PANDOC_URL https://github.com/jgm/pandoc/releases/download/$PANDOC_VERSION/
 RUN wget --no-check-certificate $PANDOC_URL/$PANDOC_ARCHIVE-linux.tar.gz && \
