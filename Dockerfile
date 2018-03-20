@@ -15,7 +15,9 @@ RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev
       musl-dev bash git
 
 # dependencies for texlive
-RUN pip3 install \
+RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/main \
+    poppler harfbuzz-icu py3-libxml2 && \
+      pip3 install \
       pantable csv2table \
       six pandoc-imagine \
       svgutils \
@@ -23,7 +25,7 @@ RUN pip3 install \
       git+https://github.com/K4zuki/wavedrompy.git \
       git+https://github.com/K4zuki/bitfieldpy.git \
       git+https://github.com/K4zuki/pandocker-filters.git \
-      git+https://github.com/pandocker/removalnotes.git \
+      git+https://github.com/pandocker/removalnotes.git
 
 RUN wget -c https://github.com/logological/gpp/releases/download/2.25/gpp-2.25.tar.bz2 && \
     tar jxf gpp-2.25.tar.bz2 && cd gpp-2.25 && ./configure && make && cp src/gpp /usr/bin/
