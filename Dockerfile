@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.9
 
 MAINTAINER k4zuki
 
@@ -26,28 +26,29 @@ RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev
 #       fs-extra yargs onml bit-field
 
 # dependencies for texlive
-RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/main \
+RUN apk --no-cache add -U \
     poppler harfbuzz-icu py3-libxml2 && \
       pip3 install \
       pantable csv2table \
       six pandoc-imagine \
       svgutils \
-      pyyaml \
-      git+https://github.com/K4zuki/wavedrompy.git \
-      git+https://github.com/K4zuki/bitfieldpy.git \
-      git+https://github.com/K4zuki/pandocker-filters.git \
+      pyyaml
+RUN pip3 install -U bitfieldpy pandoc-pandocker-filters \
       git+https://github.com/pandocker/removalnotes.git \
-      git+https://github.com/daamien/pandoc-latex-barcode
+      git+https://github.com/pandocker/tex-landscape.git \
+      git+https://github.com/pandocker/pandoc-blockdiag-filter.git \
+      git+https://github.com/pandocker/pandoc-docx-pagebreak-py.git \
+      git+https://github.com/pandocker/pandoc-docx-utils-py.git \
+      git+https://github.com/pandocker/pandoc-svgbob-filter.git \
+      git+https://github.com/pandocker/pandocker-lua-filters.git
 # zziplib (found in edge/community repository) is a dependency to texlive-luatex
 # ghc & cabal also
-RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/community \
-    zziplib && \
+RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git \
+      git+https://github.com/k4zuki/docx-core-property-writer.git
 
-    apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/edge/testing \
-    texlive-xetex && \
-
+RUN apk --no-cache add -U zziplib texlive-xetex && \
     ln -s /usr/bin/mktexlsr /usr/bin/mktexlsr.pl && \
-    mktexlsr
+    mktexlsr && fc-cache -fv
 
 RUN wget -c https://github.com/logological/gpp/releases/download/2.25/gpp-2.25.tar.bz2 && \
     tar jxf gpp-2.25.tar.bz2 && cd gpp-2.25 && ./configure && make && cp src/gpp /usr/bin/
@@ -81,7 +82,7 @@ RUN wget -c https://github.com/tcnksm/ghr/releases/download/v0.5.4/ghr_v0.5.4_li
 
 WORKDIR /var
 ENV PANDOC_MISC_VERSION 0.0.21
-RUN git clone --recursive --depth=1 -b $PANDOC_MISC_VERSION https://github.com/K4zuki/pandoc_misc.git
+RUN git clone --recursive --depth=1 https://github.com/K4zuki/pandoc_misc.git
 RUN apk del *-doc
 
 WORKDIR /workdir
