@@ -6,10 +6,12 @@ RUN apk --no-cache add -U make librsvg curl openssl gcc libc-dev libc6-compat op
     mkdir -p /workdir && \
     mkdir -p /usr/share/texlive/texmf-dist/tex/latex/BXptool/ && \
     mkdir -p /usr/local/share/fonts
-COPY src/sourcecodepro/*.ttf /usr/local/share/fonts/
-COPY src/sourcesanspro/*.ttf /usr/local/share/fonts/
+COPY src/sourcecodepro/*.ttf /usr/share/fonts/
+COPY src/sourcesanspro/*.ttf /usr/share/fonts/
 COPY src/BXptool-0.4/bx*.sty src/BXptool-0.4/bx*.def /usr/share/texlive/texmf-dist/tex/latex/BXptool/
 COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
+RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
+      unzip SourceHanSansJ.zip && cp SourceHanSansJ/SourceHanSans-*.otf /usr/share/fonts/
 
 WORKDIR /workdir
 
@@ -28,12 +30,11 @@ RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev
 # dependencies for texlive
 RUN apk --no-cache add -U \
     poppler harfbuzz-icu py3-libxml2 && \
-      pip3 install \
+      pip3 install -U \
       pantable csv2table \
       six pandoc-imagine \
       svgutils \
-      pyyaml
-RUN pip3 install -U bitfieldpy pandoc-pandocker-filters \
+      pyyaml bitfieldpy pandoc-pandocker-filters \
       git+https://github.com/pandocker/removalnotes.git \
       git+https://github.com/pandocker/tex-landscape.git \
       git+https://github.com/pandocker/pandoc-blockdiag-filter.git \
@@ -43,7 +44,7 @@ RUN pip3 install -U bitfieldpy pandoc-pandocker-filters \
       git+https://github.com/pandocker/pandocker-lua-filters.git
 # zziplib (found in edge/community repository) is a dependency to texlive-luatex
 # ghc & cabal also
-RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git \
+RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@lua-filter \
       git+https://github.com/k4zuki/docx-core-property-writer.git
 
 RUN apk --no-cache add -U zziplib texlive-xetex && \
