@@ -16,7 +16,7 @@ RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/Sourc
 
 FROM alpine:3.9 AS base
 
-COPY src/BXptool-0.4/ /usr/share/texlive/texmf-dist/tex/latex/BXptool/
+COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 
 COPY --from=wget-curl /usr/bin/gpp /usr/bin/gpp
@@ -26,7 +26,6 @@ COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=pandoc/latex:2.7.3 / /
 ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
 
-RUN apk --no-cache add py3-lxml
 RUN apk add --no-cache \
     gmp make \
     libffi \
@@ -36,9 +35,19 @@ RUN apk add --no-cache \
     lua-penlight luarocks5.3
 
 RUN apk --no-cache add -U make librsvg curl openssl openjdk8 graphviz bash git font-noto
-RUN apk --no-cache add -U python3 py3-pillow py3-reportlab
+RUN apk --no-cache add -U python3 py3-pillow py3-reportlab py3-lxml
 
-RUN apk add openjdk8-jre fontconfig ttf-dejavu && fc-cache -fv && plantuml -version
+RUN apk add openjdk8-jre fontconfig ttf-dejavu && tlmgr update --self && fc-cache -fv && plantuml -version
+RUN tlmgr install \
+    ascmac \
+    environ \
+    ifoddpage \
+    lastpage \
+    mdframed \
+    needspace \
+    tcolorbox \
+    trimspaces \
+    xhfill
 
 RUN pip3 install pantable csv2table six pandoc-imagine svgutils pyyaml
 
