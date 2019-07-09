@@ -24,6 +24,7 @@ COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=pandoc/latex:2.7.3 / /
+ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
 
 RUN apk --no-cache add py3-lxml
 RUN apk add --no-cache \
@@ -34,19 +35,18 @@ RUN apk add --no-cache \
     lua5.3-lyaml lua5.3-cjson \
     lua-penlight luarocks5.3
 
-RUN apk --no-cache add -U make librsvg curl openssl openjdk8 graphviz
-RUN apk --no-cache add -U python3 py3-pillow \
-      musl-dev bash git font-noto
+RUN apk --no-cache add -U make librsvg curl openssl openjdk8 graphviz bash git font-noto
+RUN apk --no-cache add -U python3 py3-pillow py3-reportlab
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu && fc-cache -fv && plantuml -version
 
 RUN pip3 install pantable csv2table six pandoc-imagine svgutils pyyaml
 
 RUN pip3 install pandoc-pandocker-filters \
-    git+https://github.com/pandocker/removalnotes.git \
-    git+https://github.com/pandocker/tex-landscape.git \
+#    git+https://github.com/pandocker/removalnotes.git \
+#    git+https://github.com/pandocker/tex-landscape.git \
     git+https://github.com/pandocker/pandoc-blockdiag-filter.git \
-    git+https://github.com/pandocker/pandoc-docx-pagebreak-py.git \
+#    git+https://github.com/pandocker/pandoc-docx-pagebreak-py.git \
     git+https://github.com/pandocker/pandoc-docx-utils-py.git \
     git+https://github.com/pandocker/pandoc-svgbob-filter.git \
     git+https://github.com/pandocker/pandocker-lua-filters.git
