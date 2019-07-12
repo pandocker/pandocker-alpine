@@ -39,7 +39,7 @@ RUN apk add --no-cache \
     lua-penlight luarocks5.3
 
 RUN apk --no-cache add -U make librsvg curl openssl openjdk8 graphviz bash git
-RUN apk --no-cache add -U python3 py3-pillow py3-reportlab py3-lxml py3-lupa
+RUN apk --no-cache add -U python3 py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu && tlmgr update --self && fc-cache -fv && plantuml -version
 RUN tlmgr install \
