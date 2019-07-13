@@ -24,8 +24,6 @@ COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 
 COPY --from=wget-curl /usr/bin/gpp /usr/bin/gpp
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
-#COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/
-COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=noto-cjk /usr/share/fonts/noto/ /usr/share/fonts/noto/
 COPY --from=pandoc/latex:2.7.3 / /
 ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
