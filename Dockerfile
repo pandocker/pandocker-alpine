@@ -36,11 +36,12 @@ RUN apk add --no-cache \
     lua5.3 lua5.3-dev \
     lua5.3-lpeg \
     lua5.3-lyaml lua5.3-cjson \
-    lua-penlight luarocks5.3 && \
-    luarocks-5.3 install lua-csv
+    lua-penlight luarocks5.3
 
 RUN apk --no-cache add -U make librsvg curl openssl openjdk8 graphviz bash git
 RUN apk --no-cache add -U python3 py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm
+
+RUN git clone https://github.com/isage/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/lua-csv-1.1-1.rockspec
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu && tlmgr update --self && fc-cache -fv && plantuml -version
 RUN tlmgr install \
