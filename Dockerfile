@@ -24,7 +24,8 @@ COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 
 COPY --from=wget-curl /usr/bin/gpp /usr/bin/gpp
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
-COPY --from=noto-cjk /usr/share/fonts/noto/ /usr/share/fonts/noto/
+#COPY --from=wget-curl /SourceHanSansJ/ /opt/texlive/texdir/texmf-local/
+COPY --from=noto-cjk /usr/share/fonts/noto/ /opt/texlive/texdir/texmf-local/
 COPY --from=pandoc/latex:2.7.3 / /
 ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
 
@@ -41,8 +42,8 @@ RUN apk --no-cache add -U python3 py3-pillow py3-reportlab py3-lxml py3-lupa py3
 
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
 
-RUN apk add openjdk8-jre fontconfig ttf-dejavu && tlmgr update --self && fc-cache -fv && plantuml -version
-RUN tlmgr install \
+RUN apk add openjdk8-jre fontconfig ttf-dejavu && plantuml -version
+RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ascmac \
     environ \
     ifoddpage \
@@ -51,7 +52,7 @@ RUN tlmgr install \
     needspace \
     tcolorbox \
     trimspaces \
-    xhfill
+    xhfill && mktexlsr
 
 RUN pip3 install pantable csv2table six pandoc-imagine svgutils pyyaml
 
