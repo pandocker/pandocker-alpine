@@ -1,5 +1,5 @@
-FROM alpine:edge AS noto-cjk
-RUN apk update && apk add font-noto-cjk font-noto-cjk-extra font-noto
+#FROM alpine:edge AS noto-cjk
+#RUN apk update && apk add font-noto-cjk font-noto-cjk-extra font-noto
 
 FROM alpine:3.10 AS wget-curl
 
@@ -14,8 +14,8 @@ RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/bin/plantuml.jar && \
     echo "java -jar /usr/local/bin/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
     chmod +x /usr/local/bin/plantuml
 
-#RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
-#      unzip SourceHanSansJ.zip
+RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
+      unzip SourceHanSansJ.zip
 
 FROM alpine:3.10 AS base
 
@@ -24,8 +24,8 @@ COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 
 COPY --from=wget-curl /usr/bin/gpp /usr/bin/gpp
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
-#COPY --from=wget-curl /SourceHanSansJ/ /opt/texlive/texdir/texmf-local/
-COPY --from=noto-cjk /usr/share/fonts/noto/ /opt/texlive/texdir/texmf-local/
+COPY --from=wget-curl /SourceHanSansJ/ /opt/texlive/texdir/texmf-local/
+#COPY --from=noto-cjk /usr/share/fonts/noto/ /opt/texlive/texdir/texmf-local/
 COPY --from=pandoc/latex:2.7.3 / /
 ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
 
@@ -52,7 +52,9 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     needspace \
     tcolorbox \
     trimspaces \
-    xhfill && mktexlsr
+    xhfill \
+    zxjafont \
+    zxjatype && mktexlsr
 
 RUN pip3 install pantable csv2table six pandoc-imagine svgutils pyyaml
 
