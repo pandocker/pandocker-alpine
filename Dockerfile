@@ -10,8 +10,9 @@ RUN cabal update && \
     cd pandoc-crossref && \
     cabal sandbox init && \
     cabal install pandoc pandoc-crossref pandoc-citeproc && \
-    /root/.cabal-sandbox/bin/pandoc --version && \
-    /root/.cabal-sandbox/bin/pandoc-crossref --version
+    /root/pandoc-crossref/.cabal-sandbox/bin/pandoc --version && \
+    /root/pandoc-crossref/.cabal-sandbox/bin/pandoc-crossref --version && \
+    /root/pandoc-crossref/.cabal-sandbox/bin/pandoc-citeproc --version
 
 FROM alpine:3.10 AS wget-curl
 
@@ -39,6 +40,7 @@ COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
 #COPY --from=noto-cjk /usr/share/fonts/noto/ /usr/share/fonts/noto/
 COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
+COPY --from=crossref-builder /root/pandoc-crossref/.cabal-sandbox/bin/pandoc* /usr/bin/
 COPY --from=pandoc/latex:2.7.3 / /
 ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
 
