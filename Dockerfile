@@ -4,6 +4,15 @@
 FROM ubuntu:18.04 AS ricty-getter
 RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
 
+FROM lierdakil/pandoc-crossref-build AS crossref-builder
+RUN cabal update && \
+    mkdir pandoc-crossref && \
+    cd pandoc-crossref && \
+    cabal sandbox init && \
+    cabal install pandoc pandoc-crossref pandoc-citeproc && \
+    /root/.cabal-sandbox/bin/pandoc --version && \
+    /root/.cabal-sandbox/bin/pandoc-crossref --version
+
 FROM alpine:3.10 AS wget-curl
 
 RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
