@@ -5,12 +5,12 @@ FROM ubuntu:18.04 AS ricty-getter
 RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
 
 FROM lierdakil/pandoc-crossref-build AS crossref-builder
-RUN cabal update && \
-    cabal install cabal-install && \
+RUN cabal new-update && \
     mkdir pandoc-crossref && \
     cd pandoc-crossref && \
     cabal sandbox init && \
-    cabal-install install -j4 pandoc pandoc-crossref pandoc-citeproc && \
+    cabal new-build -j4 pandoc-2.7.3 pandoc-citeproc && \
+    cabal new-build -j4 ./pandoc-crossref.cabal && \
     /root/pandoc-crossref/.cabal-sandbox/bin/pandoc --version && \
     /root/pandoc-crossref/.cabal-sandbox/bin/pandoc-crossref --version && \
     /root/pandoc-crossref/.cabal-sandbox/bin/pandoc-citeproc --version
