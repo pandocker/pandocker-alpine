@@ -6,10 +6,11 @@ RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
 
 FROM lierdakil/pandoc-crossref-build AS crossref-builder
 RUN cabal update && \
+    cabal install cabal-install && \
     mkdir pandoc-crossref && \
     cd pandoc-crossref && \
     cabal sandbox init && \
-    cabal-install pandoc pandoc-crossref pandoc-citeproc && \
+    cabal-install install -j4 pandoc pandoc-crossref pandoc-citeproc && \
     /root/pandoc-crossref/.cabal-sandbox/bin/pandoc --version && \
     /root/pandoc-crossref/.cabal-sandbox/bin/pandoc-crossref --version && \
     /root/pandoc-crossref/.cabal-sandbox/bin/pandoc-citeproc --version
