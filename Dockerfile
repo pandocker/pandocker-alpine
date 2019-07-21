@@ -9,8 +9,8 @@ RUN cabal new-update && \
     mkdir pandoc-crossref && \
     cd pandoc-crossref && \
     cabal sandbox init && \
-    cabal new-build -j4 pandoc-2.7.3 pandoc-citeproc && \
-    cabal new-build -j4 ./pandoc-crossref.cabal && \
+    cabal new-install -j4 pandoc-2.7.3 pandoc-citeproc && \
+    cabal new-build -j4 /root/pandoc-crossref.cabal && \
     /root/pandoc-crossref/.cabal-sandbox/bin/pandoc --version && \
     /root/pandoc-crossref/.cabal-sandbox/bin/pandoc-crossref --version && \
     /root/pandoc-crossref/.cabal-sandbox/bin/pandoc-citeproc --version
