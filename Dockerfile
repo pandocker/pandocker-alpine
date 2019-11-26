@@ -34,7 +34,7 @@ COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
 #COPY --from=noto-cjk /usr/share/fonts/noto/ /usr/share/fonts/noto/
 COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
-COPY --from=pandoc/latex:$(PANDOC_VERSION) / /
+COPY --from=pandoc/latex:$PANDOC_VERSION / /
 ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
 
 RUN apk add --no-cache \
