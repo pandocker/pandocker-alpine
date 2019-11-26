@@ -20,9 +20,8 @@ RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/bin/plantuml.jar && \
 RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
       unzip SourceHanSansJ.zip
 
+FROM pandoc/latex:2.8 as pandoc
 FROM alpine:3.10 AS base
-
-ENV PANDOC_VERSION 2.8
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY src/sourcecodepro/*.ttf /usr/share/fonts/
@@ -34,7 +33,7 @@ COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
 #COPY --from=noto-cjk /usr/share/fonts/noto/ /usr/share/fonts/noto/
 COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
-COPY --from=pandoc/latex:$PANDOC_VERSION / /
+COPY --from=pandoc / /
 ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
 
 RUN apk add --no-cache \
