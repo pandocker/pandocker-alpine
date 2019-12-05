@@ -52,9 +52,11 @@ RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luaro
 RUN apk add openjdk8-jre fontconfig ttf-dejavu && plantuml -version
 RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ascmac \
+    bxjscls \
     environ \
     grffile \
     ifoddpage \
+    jsclasses \
     lastpage \
     mdframed \
     needspace \
