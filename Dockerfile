@@ -56,13 +56,13 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     environ \
     grffile \
     ifoddpage \
-    jsclasses \
     lastpage \
     mdframed \
     needspace \
     tcolorbox \
     trimspaces \
     xhfill \
+    zref \
     zxjafont \
     zxjatype && mktexlsr
 
