@@ -4,7 +4,7 @@
 FROM ubuntu:18.04 AS ricty-getter
 RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
 
-FROM alpine:3.10 AS wget-curl
+FROM alpine:3.11 AS wget-curl
 
 RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
 RUN wget -c https://github.com/logological/gpp/releases/download/2.25/gpp-2.25.tar.bz2 && \
@@ -20,8 +20,8 @@ RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/bin/plantuml.jar && \
 RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
       unzip SourceHanSansJ.zip
 
-FROM pandoc/latex:2.8.1 as pandoc
-FROM alpine:3.10 AS base
+FROM pandoc/latex:2.9.1.1 as pandoc
+FROM alpine:3.11 AS base
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY src/sourcecodepro/*.ttf /usr/share/fonts/
