@@ -20,7 +20,7 @@ RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/bin/plantuml.jar && \
 RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
       unzip SourceHanSansJ.zip
 
-FROM pandoc/latex:2.9.2 as pandoc
+FROM pandoc/latex:2.9.2.1 as pandoc
 FROM alpine:3.11 AS base
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
