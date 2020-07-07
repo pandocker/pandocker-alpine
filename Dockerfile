@@ -10,7 +10,7 @@ RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
 RUN wget -c https://github.com/logological/gpp/releases/download/2.25/gpp-2.25.tar.bz2 && \
     tar jxf gpp-2.25.tar.bz2 && cd gpp-2.25 && ./configure && make && cp src/gpp /usr/bin/
 
-ENV PLANTUML_VERSION 1.2019.7
+ENV PLANTUML_VERSION 1.2020.15
 ENV PLANTUML_DOWNLOAD_URL https://sourceforge.net/projects/plantuml/files/plantuml.$PLANTUML_VERSION.jar/download
 RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/bin/plantuml.jar && \
     echo "#!/bin/bash" > /usr/local/bin/plantuml && \
