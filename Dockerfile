@@ -1,63 +1,75 @@
-FROM alpine:3.6
+FROM ubuntu:18.04 AS ricty-getter
+RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
 
-MAINTAINER k4zuki
+FROM alpine:3.11 AS wget-curl
 
-RUN apk --no-cache add -U make librsvg curl openssl gcc libc-dev libc6-compat openjdk8 graphviz && \
-    mkdir -p /workdir && \
-    mkdir -p /usr/local/share/fonts
-COPY src/sourcecodepro/*.ttf /usr/local/share/fonts/
-COPY src/sourcesanspro/*.ttf /usr/local/share/fonts/
-COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
+RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
 
-WORKDIR /workdir
-
-RUN apk --no-cache add -U python3 py3-pillow libxml2-dev libxslt-dev python3-dev \
-      musl-dev bash git
-
-# dependencies for texlive
-RUN apk --no-cache add -U --repository http://dl-3.alpinelinux.org/alpine/v3.7/main \
-    poppler harfbuzz-icu py3-libxml2 && \
-      pip3 install \
-      pantable csv2table \
-      six pandoc-imagine \
-      svgutils \
-      pyyaml \
-      git+https://github.com/K4zuki/wavedrompy.git \
-      git+https://github.com/K4zuki/bitfieldpy.git \
-      git+https://github.com/K4zuki/pandocker-filters.git \
-      git+https://github.com/pandocker/removalnotes.git
-
-RUN wget -c https://github.com/logological/gpp/releases/download/2.25/gpp-2.25.tar.bz2 && \
-    tar jxf gpp-2.25.tar.bz2 && cd gpp-2.25 && ./configure && make && cp src/gpp /usr/bin/
-
-RUN apk add openjdk8-jre fontconfig ttf-dejavu
-ENV PLANTUML_VERSION 1.2017.18
+ENV PLANTUML_VERSION 1.2020.15
 ENV PLANTUML_DOWNLOAD_URL https://sourceforge.net/projects/plantuml/files/plantuml.$PLANTUML_VERSION.jar/download
-RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/plantuml.jar && \
+RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/bin/plantuml.jar && \
     echo "#!/bin/bash" > /usr/local/bin/plantuml && \
-    echo "java -jar /usr/local/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
-    chmod +x /usr/local/bin/plantuml && plantuml -v
+    echo "java -jar /usr/local/bin/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
+    chmod +x /usr/local/bin/plantuml
 
-ENV PANDOC_VERSION 2.1.3
-ENV PANDOC_ARCHIVE pandoc-$PANDOC_VERSION
-ENV PANDOC_URL https://github.com/jgm/pandoc/releases/download/$PANDOC_VERSION/
-RUN wget --no-check-certificate $PANDOC_URL/$PANDOC_ARCHIVE-linux.tar.gz && \
-    tar zxf $PANDOC_ARCHIVE-linux.tar.gz && cp $PANDOC_ARCHIVE/bin/* /usr/local/bin/
+RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
+      unzip SourceHanSansJ.zip
 
-# ENV CROSSREF_VERSION v0.3.0.0
-# ENV CROSSREF_ARCHIVE linux-ghc8-pandoc-2-0.tar.gz
-# ENV CROSSREF_URL https://github.com/lierdakil/pandoc-crossref/releases/download/$CROSSREF_VERSION
-# # RUN cabal update && cabal install pandoc-cross
-# RUN wget --no-check-certificate $CROSSREF_URL/$CROSSREF_ARCHIVE && \
-#     tar zxf $CROSSREF_ARCHIVE && \
-#     mv pandoc-crossref /usr/local/bin/
+FROM pandoc/crossref:2.9.2.1 as pandoc
+FROM alpine:3.11 AS base
 
-RUN wget -c https://github.com/tcnksm/ghr/releases/download/v0.5.4/ghr_v0.5.4_linux_amd64.zip && \
-    unzip ghr_v0.5.4_linux_amd64.zip && \
-    mv ghr /usr/local/bin/ && \
-    rm ghr_v0.5.4_linux_amd64.zip
+COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
+COPY src/sourcecodepro/*.ttf /usr/share/fonts/
+COPY src/sourcesanspro/*.ttf /usr/share/fonts/
+COPY src/noto-jp/*.otf /usr/share/fonts/
 
-RUN apk del *-doc
+COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
+COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
+COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
+COPY --from=pandoc / /
+#ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
+
+RUN apk add --no-cache \
+    gmp make \
+    libffi \
+    lua5.3 lua5.3-dev \
+    lua5.3-lpeg \
+    lua5.3-lyaml lua5.3-cjson \
+    lua-penlight luarocks5.3
+
+RUN apk --no-cache add -U make librsvg curl openssl openjdk8 graphviz bash git
+RUN apk --no-cache add -U python3 py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm
+
+RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
+
+RUN apk add openjdk8-jre fontconfig ttf-dejavu && plantuml -version
+#RUN tlmgr update --self && fc-cache -fv && tlmgr install \
+#    ascmac \
+#    bxjscls \
+#    environ \
+#    grffile \
+#    ifoddpage \
+#    lastpage \
+#    mdframed \
+#    needspace \
+#    tcolorbox \
+#    trimspaces \
+#    xhfill \
+#    zref \
+#    zxjafont \
+#    zxjatype && mktexlsr
+
+RUN pip3 install pantable csv2table six pandoc-imagine svgutils pyyaml
+
+RUN pip3 install pandoc-pandocker-filters \
+    git+https://github.com/pandocker/pandoc-blockdiag-filter.git \
+    git+https://github.com/pandocker/pandoc-docx-utils-py.git \
+    git+https://github.com/pandocker/pandoc-svgbob-filter.git \
+    git+https://github.com/pandocker/pandocker-lua-filters.git
+
+RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.8 \
+      git+https://github.com/k4zuki/docx-core-property-writer.git
+RUN pip3 install -U pip
 
 WORKDIR /workdir
 
