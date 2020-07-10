@@ -1,14 +1,9 @@
-#FROM alpine:edge AS noto-cjk
-#RUN apk update && apk add font-noto-cjk font-noto-cjk-extra font-noto
-
 FROM ubuntu:18.04 AS ricty-getter
 RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
 
 FROM alpine:3.11 AS wget-curl
 
 RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
-RUN wget -c https://github.com/logological/gpp/releases/download/2.25/gpp-2.25.tar.bz2 && \
-    tar jxf gpp-2.25.tar.bz2 && cd gpp-2.25 && ./configure && make && cp src/gpp /usr/bin/
 
 ENV PLANTUML_VERSION 1.2020.15
 ENV PLANTUML_DOWNLOAD_URL https://sourceforge.net/projects/plantuml/files/plantuml.$PLANTUML_VERSION.jar/download
@@ -27,12 +22,10 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY src/sourcecodepro/*.ttf /usr/share/fonts/
 COPY src/sourcesanspro/*.ttf /usr/share/fonts/
 COPY src/noto-jp/*.otf /usr/share/fonts/
-COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 
 COPY --from=wget-curl /usr/bin/gpp /usr/bin/gpp
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
-#COPY --from=noto-cjk /usr/share/fonts/noto/ /usr/share/fonts/noto/
 COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
 COPY --from=pandoc / /
 ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
@@ -70,10 +63,7 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
 RUN pip3 install pantable csv2table six pandoc-imagine svgutils pyyaml
 
 RUN pip3 install pandoc-pandocker-filters \
-#    git+https://github.com/pandocker/removalnotes.git \
-#    git+https://github.com/pandocker/tex-landscape.git \
     git+https://github.com/pandocker/pandoc-blockdiag-filter.git \
-#    git+https://github.com/pandocker/pandoc-docx-pagebreak-py.git \
     git+https://github.com/pandocker/pandoc-docx-utils-py.git \
     git+https://github.com/pandocker/pandoc-svgbob-filter.git \
     git+https://github.com/pandocker/pandocker-lua-filters.git
