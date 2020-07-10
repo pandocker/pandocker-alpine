@@ -23,7 +23,6 @@ COPY src/sourcecodepro/*.ttf /usr/share/fonts/
 COPY src/sourcesanspro/*.ttf /usr/share/fonts/
 COPY src/noto-jp/*.otf /usr/share/fonts/
 
-COPY --from=wget-curl /usr/bin/gpp /usr/bin/gpp
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
 COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
