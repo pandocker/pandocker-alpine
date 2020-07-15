@@ -18,6 +18,7 @@ RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/Sourc
 FROM pandoc/latex:2.9.2.1 as pandoc
 FROM alpine:3.11 AS base
 
+COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY src/sourcecodepro/*.ttf /usr/share/fonts/
 COPY src/sourcesanspro/*.ttf /usr/share/fonts/
