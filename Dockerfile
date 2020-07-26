@@ -28,10 +28,8 @@ COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/
 COPY --from=pandoc / /
 
 RUN apk add --no-cache \
-    gmp make \
-    libffi \
-    lua5.3 lua5.3-dev \
-    lua5.3-lpeg \
+    make \
+    lua5.3-dev \
     lua5.3-lyaml lua5.3-cjson \
     lua-penlight luarocks5.3
 
