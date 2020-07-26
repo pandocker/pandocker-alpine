@@ -68,7 +68,8 @@ RUN pip3 install pandoc-pandocker-filters \
 
 RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.8 \
       git+https://github.com/k4zuki/docx-core-property-writer.git
-RUN pip3 install -U pip && apk del py3-pip
+
+RUN pip3 install -U pip && apk del py3-pip && apk -vv info | sort
 
 WORKDIR /workdir
 
