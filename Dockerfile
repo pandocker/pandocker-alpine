@@ -46,7 +46,6 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ascmac \
     bxjscls \
     environ \
-    grffile \
     ifoddpage \
     lastpage \
     mdframed \
