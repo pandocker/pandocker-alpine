@@ -1,7 +1,7 @@
 import subprocess as sp
 import argparse
 
-DOCKER = "cd {}; pwd; docker run --rm -it -v$PWD:/workdir k4zuki/pandocker-alpine:2.8"
+DOCKER = "cd {}; pwd; docker run --rm -it -v$PWD:/workdir k4zuki/pandocker-alpine:2.10"
 
 
 def main():
