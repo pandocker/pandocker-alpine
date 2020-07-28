@@ -37,7 +37,7 @@ RUN apk add --no-cache \
     lua-penlight luarocks5.3
 
 RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
-RUN apk --no-cache add -U python3 py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm
+RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm
 
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
 
@@ -68,7 +68,7 @@ RUN pip3 install pandoc-pandocker-filters \
 RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.8 \
       git+https://github.com/k4zuki/docx-core-property-writer.git
 
-RUN pip3 install -U pip && apk del py3-pip && apk -vv info | sort
+RUN apk -vv info | sort
 
 WORKDIR /workdir
 
