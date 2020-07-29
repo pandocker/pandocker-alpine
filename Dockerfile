@@ -18,9 +18,8 @@ RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/Sourc
 FROM pandoc/latex:2.10 as pandoc
 FROM alpine:3.12 AS base
 
-#COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
-COPY src/sourcecodepro/*.ttf /usr/share/fonts/
+#COPY src/sourcecodepro/*.ttf /usr/share/fonts/
 COPY src/sourcesanspro/*.ttf /usr/share/fonts/
 COPY src/noto-jp/*.otf /usr/share/fonts/
 
@@ -36,8 +35,10 @@ RUN apk add --no-cache \
     lua5.3-lyaml lua5.3-cjson \
     lua-penlight luarocks5.3
 
-RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
-RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm
+RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git font-source-code-pro-nerd
+
+RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
+    py3-six py3-yaml
 
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
 
@@ -57,7 +58,7 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     zxjafont \
     zxjatype && mktexlsr
 
-RUN pip3 install pantable csv2table six pandoc-imagine svgutils pyyaml
+RUN pip3 install pantable csv2table pandoc-imagine svgutils
 
 RUN pip3 install pandoc-pandocker-filters \
     git+https://github.com/pandocker/pandoc-blockdiag-filter.git \
