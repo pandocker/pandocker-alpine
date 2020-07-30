@@ -76,4 +76,5 @@ WORKDIR /workdir
 VOLUME ["/workdir"]
 
 ENV TZ JST-9
+ENTRYPOINT [""]
 CMD ["bash"]
