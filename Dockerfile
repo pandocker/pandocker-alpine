@@ -15,8 +15,8 @@ RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/bin/plantuml.jar && \
 RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
       unzip SourceHanSansJ.zip
 
-FROM pandoc/latex:2.10 as pandoc
 FROM alpine:3.12 AS base
+FROM pandoc/latex:2.10 as pandoc
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 #COPY src/sourcecodepro/*.ttf /usr/share/fonts/
@@ -26,8 +26,8 @@ COPY src/noto-jp/*.otf /usr/share/fonts/
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
 COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
-COPY --from=pandoc / /
-ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
+#COPY --from=pandoc / /
+#ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
 
 RUN apk add --no-cache \
     make \
@@ -35,7 +35,7 @@ RUN apk add --no-cache \
     lua5.3-lyaml lua5.3-cjson \
     lua-penlight luarocks5.3
 
-RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git font-source-code-pro-nerd
+RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git font-source-code-pro-nerd font-noto-cjk font-noto-cjk-extra
 
 RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
     py3-six py3-yaml
