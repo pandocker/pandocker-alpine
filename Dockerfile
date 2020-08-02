@@ -46,6 +46,7 @@ RUN apk add openjdk8-jre fontconfig ttf-dejavu && plantuml -version
 RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ascmac \
     bxjscls \
+    ctex \
     environ \
     ifoddpage \
     lastpage \
