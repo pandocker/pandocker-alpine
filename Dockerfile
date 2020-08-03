@@ -67,7 +67,7 @@ RUN pip3 install pandoc-pandocker-filters \
     git+https://github.com/pandocker/pandoc-svgbob-filter.git \
     git+https://github.com/pandocker/pandocker-lua-filters.git
 
-RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.8 \
+RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.10 \
       git+https://github.com/k4zuki/docx-core-property-writer.git
 
 RUN apk -vv info | sort
