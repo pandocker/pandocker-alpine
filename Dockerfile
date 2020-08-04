@@ -27,8 +27,6 @@ COPY src/noto-jp/*.otf /usr/share/fonts/
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
 COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
-COPY --from=pandoc / /
-ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
 
 RUN apk add --no-cache \
     make \
