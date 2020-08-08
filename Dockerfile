@@ -43,6 +43,7 @@ RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu && plantuml -version
+RUN tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
 RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ascmac \
     bxjscls \
