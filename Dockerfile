@@ -57,11 +57,11 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
 
 RUN pip3 install pantable csv2table six pandoc-imagine svgutils pyyaml
 
-RUN pip3 install pandoc-pandocker-filters \
+RUN pip3 install pandoc-pandocker-filters pandocker-lua-filters \
     git+https://github.com/pandocker/pandoc-blockdiag-filter.git \
     git+https://github.com/pandocker/pandoc-docx-utils-py.git \
-    git+https://github.com/pandocker/pandoc-svgbob-filter.git \
-    git+https://github.com/pandocker/pandocker-lua-filters.git
+    git+https://github.com/pandocker/pandoc-svgbob-filter.git
+#    git+https://github.com/pandocker/pandocker-lua-filters.git
 
 RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.8 \
       git+https://github.com/k4zuki/docx-core-property-writer.git
