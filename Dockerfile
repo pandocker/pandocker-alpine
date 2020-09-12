@@ -46,9 +46,11 @@ RUN apk add openjdk8-jre fontconfig ttf-dejavu && plantuml -version
 RUN tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
 RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ascmac \
+    background \
     bxjscls \
     ctex \
     environ \
+    everypage \
     haranoaji \
     haranoaji-extra \
     ifoddpage \
