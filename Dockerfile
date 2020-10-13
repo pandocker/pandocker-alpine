@@ -16,7 +16,7 @@ RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/Sourc
       unzip SourceHanSansJ.zip
 
 FROM alpine:3.12 AS base
-FROM pandoc/latex:2.10 as pandoc
+FROM pandoc/latex:2.10.1 as pandoc
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 #COPY src/sourcecodepro/*.ttf /usr/share/fonts/
