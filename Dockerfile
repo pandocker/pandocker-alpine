@@ -13,7 +13,8 @@ RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/bin/plantuml.jar && \
     chmod +x /usr/local/bin/plantuml
 
 RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
-      unzip SourceHanSansJ.zip
+      mkdir SourceHanSansJ && \
+      unzip SourceHanSansJ.zip -d SourceHanSansJ
 
 FROM alpine:3.12 AS base
 FROM pandoc/latex:2.10.1 as pandoc
