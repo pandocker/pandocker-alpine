@@ -35,7 +35,7 @@ RUN apk add --update --no-cache \
 RUN npm i canvas --build-from-source && \
     npm i wavedrom-cli && \
     nexe --build -i ./node_modules/wavedrom-cli/wavedrom-cli.js -o wavedrom-cli
-RUN echo "{}" | ./wavedrom-cli -i -
+RUN echo "{}" | ./wavedrom-cli --version
 
 FROM pandoc/latex:${pandoc_version} as pandoc
 
