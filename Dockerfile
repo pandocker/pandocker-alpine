@@ -1,6 +1,6 @@
 ARG ubuntu_version="20.04"
 ARG alpine_version="3.12.9"
-ARG pandoc_version="2.16.2"
+ARG pandoc_version="2.17.1.1"
 ARG nexe_version="4.0.0-beta.19"
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
@@ -35,6 +35,7 @@ RUN apk add --update --no-cache \
 RUN npm i canvas --build-from-source && \
     npm i wavedrom-cli && \
     nexe --build -i ./node_modules/wavedrom-cli/wavedrom-cli.js -o wavedrom-cli
+RUN echo "{}" | wavedrom-cli -i -
 
 FROM pandoc/latex:${pandoc_version} as pandoc
 
