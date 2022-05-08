@@ -1,14 +1,15 @@
 import subprocess as sp
 import argparse
 
-DOCKER = "cd {}; pwd; docker run --rm -it -v$PWD:/workdir k4zuki/pandocker-alpine:2.10"
+DOCKER = "cd {}; pwd; docker run --rm -it -v$PWD:/workdir k4zuki/pandocker-alpine:{}"
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("input")
+    parser.add_argument("image_version")
     args = parser.parse_args()
-    sp.run(DOCKER.format(args.input), shell=True)
+    sp.run(DOCKER.format(args.input, args.image_version), shell=True)
 
 
 if __name__ == '__main__':
