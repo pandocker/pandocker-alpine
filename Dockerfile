@@ -1,6 +1,6 @@
 ARG ubuntu_version="20.04"
 ARG alpine_version="3.12.9"
-ARG pandoc_version="2.17"
+ARG pandoc_version="2.17.1.1"
 ARG nexe_version="4.0.0-beta.19"
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
@@ -62,26 +62,26 @@ RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu && plantuml -version
-RUN tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
-RUN tlmgr update --self && fc-cache -fv && tlmgr install \
-    ascmac \
-    background \
-    bxjscls \
-    ctex \
-    environ \
-    everypage \
-    haranoaji \
-    haranoaji-extra \
-    ifoddpage \
-    lastpage \
-    mdframed \
-    needspace \
-    tcolorbox \
-    trimspaces \
-    xhfill \
-    zref \
-    zxjafont \
-    zxjatype && mktexlsr
+#RUN tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
+#RUN tlmgr update --self && fc-cache -fv && tlmgr install \
+#    ascmac \
+#    background \
+#    bxjscls \
+#    ctex \
+#    environ \
+#    everypage \
+#    haranoaji \
+#    haranoaji-extra \
+#    ifoddpage \
+#    lastpage \
+#    mdframed \
+#    needspace \
+#    tcolorbox \
+#    trimspaces \
+#    xhfill \
+#    zref \
+#    zxjafont \
+#    zxjatype && mktexlsr
 
 RUN pip3 install pantable csv2table pandoc-imagine svgutils
 
