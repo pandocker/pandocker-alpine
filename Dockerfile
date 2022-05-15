@@ -1,6 +1,6 @@
 ARG ubuntu_version="20.04"
 ARG alpine_version="3.12.9"
-ARG pandoc_version="2.11"
+ARG pandoc_version="2.12"
 ARG nexe_version="4.0.0-beta.19"
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
