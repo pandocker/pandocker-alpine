@@ -71,15 +71,18 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ctex \
     environ \
     everypage \
+    fancybox \
     haranoaji \
     haranoaji-extra \
     ifoddpage \
     lastpage \
     mdframed \
     needspace \
+    realscripts\
     tcolorbox \
     trimspaces \
     xhfill \
+    xltxtra \
     zref \
     zxjafont \
     zxjatype && mktexlsr
