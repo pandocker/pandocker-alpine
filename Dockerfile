@@ -1,6 +1,6 @@
-ARG ubuntu_version="20.04"
-ARG alpine_version="3.12.9"
-ARG pandoc_version="2.18"
+ARG ubuntu_version="22.04"
+ARG alpine_version="3.16.1"
+ARG pandoc_version="2.19"
 ARG nexe_version="4.0.0-beta.19"
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
@@ -71,15 +71,18 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ctex \
     environ \
     everypage \
+    fancybox \
     haranoaji \
     haranoaji-extra \
     ifoddpage \
     lastpage \
     mdframed \
     needspace \
+    realscripts\
     tcolorbox \
     trimspaces \
     xhfill \
+    xltxtra \
     zref \
     zxjafont \
     zxjatype && mktexlsr
