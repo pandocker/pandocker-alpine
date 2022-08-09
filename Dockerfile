@@ -87,15 +87,11 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     zxjafont \
     zxjatype && mktexlsr
 
-RUN pip3 install pantable csv2table pandoc-imagine svgutils
+RUN pip3 install pandoc-imagine svgutils
 
-RUN pip3 install pandoc-pandocker-filters pandocker-lua-filters \
-    git+https://github.com/pandocker/pandoc-blockdiag-filter.git \
-    git+https://github.com/pandocker/pandoc-docx-utils-py.git \
-    git+https://github.com/pandocker/pandoc-svgbob-filter.git
+RUN pip3 install pandocker-lua-filters docx-coreprop-writer
 
-RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.16.2 \
-      git+https://github.com/k4zuki/docx-core-property-writer.git
+RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.16.2
 
 RUN apk -vv info | sort
 
