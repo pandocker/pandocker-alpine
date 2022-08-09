@@ -56,7 +56,8 @@ RUN apk add --no-cache \
 
 RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
 
-RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
+RUN apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/v3.15/main python3=3.9 \
+    py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
     py3-six py3-yaml py3-numpy
 
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
