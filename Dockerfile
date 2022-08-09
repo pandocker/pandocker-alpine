@@ -48,6 +48,10 @@ COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
 COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
+    echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
+    apk update
+
 RUN apk add --no-cache \
     make \
     lua5.3-dev \
@@ -56,7 +60,6 @@ RUN apk add --no-cache \
 
 RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
 
-RUN apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/v3.15/main python3=3.9
 RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
     py3-six py3-yaml py3-numpy
 
