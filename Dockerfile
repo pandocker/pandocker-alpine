@@ -17,10 +17,6 @@ RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     echo "java -jar /usr/local/bin/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
     chmod +x /usr/local/bin/plantuml
 
-RUN wget -c https://github.com/adobe-fonts/source-han-sans/releases/download/2.004R/SourceHanSansHWJ.zip && \
-      mkdir SourceHanSansJ && \
-      unzip SourceHanSansHWJ.zip -d SourceHanSansJ
-
 FROM lansible/nexe:${nexe_version} as wavedrom
 WORKDIR /root
 RUN apk add --update --no-cache \
@@ -39,13 +35,8 @@ RUN npm i canvas --build-from-source && \
 FROM pandoc/latex:${pandoc_version} as pandoc
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
-#COPY src/sourcecodepro/*.ttf /usr/share/fonts/
-COPY src/sourcesanspro/*.ttf /usr/share/fonts/
-COPY src/noto-jp/*.otf /usr/share/fonts/
 
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
-COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
-COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
@@ -65,7 +56,7 @@ RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-
 
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
 
-RUN apk add openjdk8-jre fontconfig ttf-dejavu && plantuml -version
+RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk && plantuml -version
 RUN curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && sh update-tlmgr-latest.sh
 RUN tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
 RUN tlmgr update --self && fc-cache -fv && tlmgr install \
@@ -76,8 +67,6 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     environ \
     everypage \
     fancybox \
-    haranoaji \
-    haranoaji-extra \
     ifoddpage \
     lastpage \
     mdframed \
