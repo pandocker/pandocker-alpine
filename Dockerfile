@@ -1,85 +1,97 @@
-#FROM alpine:edge AS noto-cjk
-#RUN apk update && apk add font-noto-cjk font-noto-cjk-extra font-noto
+ARG ubuntu_version="22.04"
+ARG alpine_version="3.16.1"
+ARG pandoc_version="2.19"
+ARG nexe_version="4.0.0-rc.2"
 
-FROM ubuntu:18.04 AS ricty-getter
+FROM ubuntu:${ubuntu_version} AS ricty-getter
 RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
 
-FROM alpine:3.10 AS wget-curl
+FROM alpine:${alpine_version} AS wget-curl
 
 RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
-RUN wget -c https://github.com/logological/gpp/releases/download/2.25/gpp-2.25.tar.bz2 && \
-    tar jxf gpp-2.25.tar.bz2 && cd gpp-2.25 && ./configure && make && cp src/gpp /usr/bin/
 
-ENV PLANTUML_VERSION 1.2019.7
-ENV PLANTUML_DOWNLOAD_URL https://sourceforge.net/projects/plantuml/files/plantuml.$PLANTUML_VERSION.jar/download
-RUN curl -fsSL "$PLANTUML_DOWNLOAD_URL" -o /usr/local/bin/plantuml.jar && \
+ENV PLANTUML_VERSION 1.2022.6
+ENV PLANTUML_DOWNLOAD_URL https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar
+RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     echo "#!/bin/bash" > /usr/local/bin/plantuml && \
     echo "java -jar /usr/local/bin/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
     chmod +x /usr/local/bin/plantuml
 
-RUN wget -c https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/SourceHanSansJ.zip && \
-      unzip SourceHanSansJ.zip
+FROM lansible/nexe:${nexe_version} as wavedrom
+WORKDIR /root
+RUN apk add --update --no-cache \
+    make \
+    g++ \
+    jpeg-dev \
+    cairo-dev \
+    giflib-dev \
+    pango-dev \
+    python3
 
-FROM alpine:3.10 AS base
+RUN npm i canvas --build-from-source && \
+    npm i https://github.com/K4zuki/cli.git && \
+    nexe --build -i ./node_modules/wavedrom-cli/wavedrom-cli.js -o wavedrom-cli
+
+FROM pandoc/latex:${pandoc_version} as pandoc
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
-COPY src/sourcecodepro/*.ttf /usr/share/fonts/
-COPY src/sourcesanspro/*.ttf /usr/share/fonts/
-COPY bin/pandoc-crossref-alpine /usr/local/bin/pandoc-crossref
 
-COPY --from=wget-curl /usr/bin/gpp /usr/bin/gpp
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
-COPY --from=wget-curl /SourceHanSansJ/ /usr/share/fonts/SourceHanSansJ/
-#COPY --from=noto-cjk /usr/share/fonts/noto/ /usr/share/fonts/noto/
-COPY --from=ricty-getter /usr/share/fonts/truetype/ricty-diminished/ /usr/share/fonts/truetype/ricty-diminished/
-COPY --from=pandoc/latex:2.7.3 / /
-ENV PATH /opt/texlive/texdir/bin/x86_64-linuxmusl:$PATH
+COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
+
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
+    echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
+    apk update
 
 RUN apk add --no-cache \
-    gmp make \
-    libffi \
-    lua5.3 lua5.3-dev \
-    lua5.3-lpeg \
+    make \
+    lua5.3-dev \
     lua5.3-lyaml lua5.3-cjson \
     lua-penlight luarocks5.3
 
-RUN apk --no-cache add -U make librsvg curl openssl openjdk8 graphviz bash git
-RUN apk --no-cache add -U python3 py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm
+RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
+
+RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
+    py3-six py3-yaml py3-numpy
 
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
 
-RUN apk add openjdk8-jre fontconfig ttf-dejavu && plantuml -version
+RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra && plantuml -version
+RUN curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && sh update-tlmgr-latest.sh
+RUN tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
 RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ascmac \
+    background \
+    bxjscls \
+    ctex \
     environ \
-    grffile \
+    everypage \
+    fancybox \
     ifoddpage \
     lastpage \
     mdframed \
     needspace \
+    realscripts\
     tcolorbox \
     trimspaces \
     xhfill \
+    xltxtra \
+    zref \
     zxjafont \
     zxjatype && mktexlsr
 
-RUN pip3 install pantable csv2table six pandoc-imagine svgutils pyyaml
+RUN pip3 install pandoc-imagine svgutils
 
-RUN pip3 install pandoc-pandocker-filters \
-#    git+https://github.com/pandocker/removalnotes.git \
-#    git+https://github.com/pandocker/tex-landscape.git \
-    git+https://github.com/pandocker/pandoc-blockdiag-filter.git \
-#    git+https://github.com/pandocker/pandoc-docx-pagebreak-py.git \
-    git+https://github.com/pandocker/pandoc-docx-utils-py.git \
-    git+https://github.com/pandocker/pandoc-svgbob-filter.git \
-    git+https://github.com/pandocker/pandocker-lua-filters.git@for-2.7
+RUN pip3 install pandocker-lua-filters docx-coreprop-writer
 
-RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@lua-filter \
-      git+https://github.com/k4zuki/docx-core-property-writer.git
+RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.16.2
+
+RUN apk -vv info | sort
 
 WORKDIR /workdir
 
 VOLUME ["/workdir"]
 
 ENV TZ JST-9
+ENTRYPOINT [""]
 CMD ["bash"]
