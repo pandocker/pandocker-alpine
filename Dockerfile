@@ -40,7 +40,7 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 
-RUN if [ ${pandoc_version} = "2.19" ]; then \
+RUN if [ ${pandoc_version} = 2.19 ] || [ ${pandoc_version} = 3.0.1 ]; then \
         echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
         echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
         apk update; \
