@@ -5,15 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        pandoc: [2.18]
-        alpine: [3.14]
+        pandoc: [2.19]
+        alpine: [3.16.1]
         include:
-          - pandoc: 2.16
-            alpine: 3.12
-          - pandoc: 2.17
-            alpine: 3.14
-          - pandoc: 2.19
-            alpine: 3.16.1
+#          - pandoc: 2.16
+#            alpine: 3.12
+#          - pandoc: 2.17
+#            alpine: 3.14
+#          - pandoc: 2.18
+#            alpine: 3.14
           - pandoc: 3.0.1
             alpine: 3.16.1
     steps:
