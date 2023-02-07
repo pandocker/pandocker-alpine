@@ -40,5 +40,5 @@ jobs:
             nexe_version=4.0.0-beta.19
             alpine_version=${{matrix.alpine}}
             pandoc_version=${{matrix.pandoc}}
-            pandoc_variant=${{matrix.variant}}}
+            pandoc_variant=${{matrix.variant}}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}
