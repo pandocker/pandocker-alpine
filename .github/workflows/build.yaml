@@ -8,12 +8,12 @@ jobs:
         pandoc: [2.19]
         alpine: [3.16.1]
         include:
-          - pandoc: 2.16
-            alpine: 3.12
-          - pandoc: 2.17
-            alpine: 3.14
-          - pandoc: 2.18
-            alpine: 3.14
+#          - pandoc: 2.16
+#            alpine: 3.12
+#          - pandoc: 2.17
+#            alpine: 3.14
+#          - pandoc: 2.18
+#            alpine: 3.14
           - pandoc: 3.0
             alpine: 3.16.1
     steps:
@@ -34,7 +34,7 @@ jobs:
           push: false
           build-args: |
             ubuntu_version=22.04
-            nexe_version=4.0.0-rc.2
+            nexe_version=4.0.0-beta.19
             alpine_version=${{matrix.alpine}}
             pandoc_version=${{matrix.pandoc}}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}
