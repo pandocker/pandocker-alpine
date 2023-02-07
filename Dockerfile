@@ -49,7 +49,7 @@ RUN apk add --no-cache \
     lua5.3-lyaml lua5.3-cjson \
     lua-penlight luarocks5.3
 
-RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
+RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git xz
 
 RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
     py3-six py3-yaml py3-numpy
