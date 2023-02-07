@@ -1,5 +1,5 @@
 ARG ubuntu_version="22.04"
-ARG alpine_version="3.16.1"
+ARG alpine_version="3.16"
 ARG pandoc_version="2.19"
 ARG pandoc_variant="latex"
 ARG nexe_version="4.0.0-rc.2"
@@ -40,9 +40,16 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
-    apk update
+RUN if [ "${pandoc_version}" = "2.19" ]; then \
+        echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
+        echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
+        apk update; \
+    else \
+        echo "do not change apk repository"; \
+fi
+#RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
+#    echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
+#    apk update
 
 RUN apk add --no-cache \
     make \
@@ -50,7 +57,7 @@ RUN apk add --no-cache \
     lua5.3-lyaml lua5.3-cjson \
     lua-penlight luarocks5.3
 
-RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git xz
+RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
 
 RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
     py3-six py3-yaml py3-numpy
