@@ -58,7 +58,7 @@ RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luaro
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra && plantuml -version
 RUN curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && chmod +x update-tlmgr-latest.sh
-RUN ./update-tlmgr-latest.sh
+RUN ./update-tlmgr-latest.sh --
 RUN tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
 RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ascmac \
