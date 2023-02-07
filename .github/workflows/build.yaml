@@ -33,6 +33,8 @@ jobs:
           file: ./Dockerfile
           push: false
           build-args: |
-            alpine_version=${{matrix.alpine}}
-            pandoc_version=${{matrix.pandoc}}
+            ubuntu_version="22.04"
+            nexe_version="4.0.0-rc.2"
+            alpine_version="${{matrix.alpine}}"
+            pandoc_version="${{matrix.pandoc}}"
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}
