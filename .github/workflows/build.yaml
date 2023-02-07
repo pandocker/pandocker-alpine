@@ -32,5 +32,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
-          build-args: alpine_version=${{matrix.alpine}} pandoc_version=${{matrix.pandoc}}
+          build-args: |
+            alpine_version=${{matrix.alpine}}
+            pandoc_version=${{matrix.pandoc}}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}
