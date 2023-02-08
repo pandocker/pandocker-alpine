@@ -4,7 +4,6 @@ ARG pandoc_version="2.19"
 ARG pandoc_variant="latex"
 ARG nexe_version="4.0.0-rc.2"
 
-ENV PANDOC ${pandoc_version}
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
 RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
@@ -41,6 +40,7 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
+ENV PANDOC ${pandoc_version}
 
 RUN if [ "v${PANDOC}" = "v2.19" ] || [ "v${PANDOC}" = "v3.0.1" ]; then \
         echo "2.19 or 3.0.1" && \
