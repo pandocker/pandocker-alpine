@@ -40,9 +40,9 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
-ENV PANDOC ${pandoc_version}
 
-RUN if [ "v${PANDOC}" = "v2.19" ] || [ "v${PANDOC}" = "v3.0.1" ]; then \
+ARG tlmgr
+RUN if [ ${tlmgr} = "true" ]; then \
         echo "2.19 or 3.0.1" && \
         echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
         echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
