@@ -68,7 +68,7 @@ RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.3 make rockspecs/csv-1-1.rockspec
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra && plantuml -version
-RUN if [ "$tlmgr" = "true" ]; then \
+RUN if [ ${tlmgr} = "true" ]; then \
         echo "2.18 or earlier" && \
         curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && chmod +x update-tlmgr-latest.sh &&\
         ./update-tlmgr-latest.sh &&\
