@@ -42,7 +42,7 @@ COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 
 ARG tlmgr
-RUN if [ "$tlmgr" = "false" ]; then \
+RUN if [ ${tlmgr} = "false" ]; then \
         echo "2.19 or 3.0.1" && \
         echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
         echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
