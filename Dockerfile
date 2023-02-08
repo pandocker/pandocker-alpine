@@ -1,6 +1,6 @@
 ARG ubuntu_version="22.04"
 ARG alpine_version="3.16"
-ARG pandoc_version="2.19"
+#ARG pandoc_version="2.19"
 ARG pandoc_variant="latex"
 ARG nexe_version="4.0.0-rc.2"
 
@@ -33,6 +33,7 @@ RUN npm i canvas --build-from-source && \
     npm i https://github.com/K4zuki/cli.git && \
     nexe --build -i ./node_modules/wavedrom-cli/wavedrom-cli.js -o wavedrom-cli
 
+ARG pandoc_version="2.19"
 FROM pandoc/${pandoc_variant}:${pandoc_version} as pandoc
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
@@ -40,7 +41,8 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 
-RUN if [ "$pandoc_version" == "2.19" ] || [ "$pandoc_version" == "3.0.1" ]; then \
+RUN if [ "v${pandoc_version}" = "v2.19" ] || [ "v${pandoc_version}" = "v3.0.1" ]; then \
+        echo "2.19 or 3.0.1" && \
         echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/main" > /etc/apk/repositories && \
         echo "http://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
         apk update; \
