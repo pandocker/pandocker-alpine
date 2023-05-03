@@ -50,4 +50,5 @@ jobs:
             pandoc_version=${{matrix.pandoc}}
             pandoc_variant=${{matrix.variant}}
             tlmgr=${{matrix.tlmgr}}
+            lua=${{matrix.lua}}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}
