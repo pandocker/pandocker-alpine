@@ -3,6 +3,7 @@ ARG alpine_version="3.16.4"
 ARG pandoc_version="edge-alpine"
 ARG pandoc_variant="extra"
 ARG nexe_version="4.0.0-rc.2"
+ARG lua_version="5.3"
 
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
@@ -22,12 +23,12 @@ RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
 FROM alpine:edge as csv
 RUN apk add --no-cache \
     make git \
-    lua5.4-dev \
-    lua5.4-lyaml lua5.4-cjson \
+    lua${lua_version}-dev \
+    lua${lua_version}-lyaml lua${lua_version}-cjson \
     lua-penlight \
-    luarocks5.4
-RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.4 make rockspecs/csv-1-1.rockspec
-RUN ls /usr/share/lua/5.4
+    luarocks${lua_version}
+RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && \
+    luarocks-${lua_version} make rockspecs/csv-1-1.rockspec
 
 FROM lansible/nexe:${nexe_version} as wavedrom
 WORKDIR /root
@@ -52,6 +53,7 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY --from=wget-curl /etc/apk/repositories /etc/apk/repositories
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
+COPY --from=csv /usr/share/lua/5.3 /usr/share/lua/5.3
 COPY --from=csv /usr/share/lua/5.4 /usr/share/lua/5.4
 
 ARG tlmgr="false"
