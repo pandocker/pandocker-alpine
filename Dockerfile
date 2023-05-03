@@ -71,13 +71,12 @@ RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra
 RUN curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && \
     chmod +x update-tlmgr-latest.sh
 RUN if [ ${tlmgr} = "true" ]; then \
-        ./update-tlmgr-latest.sh -- --upgrade; \
+        tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022/tlnet-final/ ; \
     else \
-        tlmgr update --self --all && \
-        echo "do not run update-tlmgr-latest.sh"; \
+        echo "do not run update-tlmgr-latest.sh" && \
+        tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet ; \
     fi
 
-RUN tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
 RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     ascmac \
     background \
