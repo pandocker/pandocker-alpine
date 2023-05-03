@@ -69,8 +69,7 @@ RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luaro
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra && plantuml -version
 RUN curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && \
-    chmod +x update-tlmgr-latest.sh && \
-    ./update-tlmgr-latest.sh -- --upgrade
+    chmod +x update-tlmgr-latest.sh
 RUN if [ ${tlmgr} = "true" ]; then \
         ./update-tlmgr-latest.sh -- --upgrade; \
     else \
