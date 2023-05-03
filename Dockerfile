@@ -3,7 +3,6 @@ ARG alpine_version="3.16.4"
 ARG pandoc_version="edge-alpine"
 ARG pandoc_variant="extra"
 ARG nexe_version="4.0.0-rc.2"
-ARG lua_version="5.3"
 
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
@@ -21,6 +20,7 @@ RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     chmod +x /usr/local/bin/plantuml
 
 FROM alpine:edge as csv
+ARG lua_version="5.3"
 RUN apk add --no-cache \
     make git \
     lua${lua_version}-dev \
@@ -53,17 +53,17 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY --from=wget-curl /etc/apk/repositories /etc/apk/repositories
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
-COPY --from=csv /usr/share/lua/5.3 /usr/share/lua/5.3
-COPY --from=csv /usr/share/lua/5.4 /usr/share/lua/5.4
+COPY --from=csv /usr/share/lua/${lua_version} /usr/share/lua/${lua_version}
 
 ARG tlmgr="false"
 ARG texlive="2022"
 
 RUN apk add --no-cache \
     make \
-    lua5.3-dev \
-    lua5.3-lyaml lua5.3-cjson \
-    lua-penlight luarocks5.3
+    lua${lua_version}-dev \
+    lua${lua_version}-lyaml lua${lua_version}-cjson \
+    lua-penlight \
+    luarocks${lua_version}
 
 RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
 
