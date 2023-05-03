@@ -19,6 +19,12 @@ RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     echo "java -jar /usr/local/bin/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
     chmod +x /usr/local/bin/plantuml
 
+FROM alpine:edge as csv
+RUN apk add --update --nocache \
+    git luarocks5.4
+RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.4 make rockspecs/csv-1-1.rockspec
+RUN ls /usr/share/lua/5.4
+
 FROM lansible/nexe:${nexe_version} as wavedrom
 WORKDIR /root
 RUN apk add --update --no-cache \
@@ -39,24 +45,22 @@ FROM pandoc/${pandoc_variant}:${pandoc_version} as pandoc
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 
+COPY --from=wget-curl /etc/apk/repositories /etc/apk/repositories
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 
 ARG tlmgr="false"
-ARG lua="5.3"
 
 RUN apk add --no-cache \
     make \
-    lua${lua}-dev \
-    lua${lua}-lyaml lua${lua}-cjson \
-    lua-penlight luarocks${lua}
+    lua5.3-dev \
+    lua5.3-lyaml lua5.3-cjson \
+    lua-penlight luarocks5.3
 
 RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
 
 RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
     py3-six py3-yaml py3-numpy
-
-RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-${lua} make rockspecs/csv-1-1.rockspec
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra && plantuml -version
 RUN curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && \
