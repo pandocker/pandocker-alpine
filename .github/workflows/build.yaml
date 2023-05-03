@@ -14,7 +14,7 @@ jobs:
         lua: [ 5.4 ]
         include:
           - pandoc: edge-alpine
-            alpine: 3.16.4
+            alpine: edge
             variant: latex
             tlmgr: false
             texlive: 2023
