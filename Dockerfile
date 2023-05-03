@@ -20,7 +20,7 @@ RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     chmod +x /usr/local/bin/plantuml
 
 FROM alpine:edge as csv
-RUN apk add --update --nocache \
+RUN apk add --update --no-cache \
     git luarocks5.4
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && luarocks-5.4 make rockspecs/csv-1-1.rockspec
 RUN ls /usr/share/lua/5.4

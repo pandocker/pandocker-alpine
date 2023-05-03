@@ -9,7 +9,7 @@ jobs:
         pandoc: [ 2.19, 3.1, edge-alpine ]
         alpine: [ 3.16.4 ]
         variant: [ latex, extra ]
-        tlmgr: [ false ]
+        tlmgr: [ true, false ]
         include:
           - pandoc: 2.16
             alpine: 3.12
