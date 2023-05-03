@@ -72,7 +72,7 @@ RUN if [ ${tlmgr} = "true" ]; then \
         echo "2.18 or earlier" && \
         curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && \
         chmod +x update-tlmgr-latest.sh && \
-        ./update-tlmgr-latest.sh; \
+        ./update-tlmgr-latest.sh --update; \
     else \
         echo "do not run update-tlmgr-latest.sh"; \
 fi
