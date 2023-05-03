@@ -1,7 +1,7 @@
 ARG ubuntu_version="22.04"
-ARG alpine_version="3.16"
-ARG pandoc_version="2.19"
-ARG pandoc_variant="latex"
+ARG alpine_version="3.16.4"
+ARG pandoc_version="edge-alpine"
+ARG pandoc_variant="extra"
 ARG nexe_version="4.0.0-rc.2"
 
 
@@ -28,7 +28,8 @@ RUN apk add --update --no-cache \
     cairo-dev \
     giflib-dev \
     pango-dev \
-    python3
+    python3 \
+    npm
 
 RUN npm i canvas --build-from-source && \
     npm i https://github.com/K4zuki/cli.git && \
