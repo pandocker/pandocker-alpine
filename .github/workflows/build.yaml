@@ -8,7 +8,7 @@ jobs:
       matrix:
         pandoc: [ 2.19, 3.1, edge-alpine ]
         alpine: [ 3.16.4 ]
-        variant: [ latex ]
+        variant: [ latex, extra ]
         tlmgr: [ false ]
         include:
           - pandoc: 2.16

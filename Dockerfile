@@ -48,6 +48,7 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY --from=wget-curl /etc/apk/repositories /etc/apk/repositories
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
+COPY --from=csv /usr/share/lua/5.4 /usr/share/lua/5.4
 
 ARG tlmgr="false"
 
