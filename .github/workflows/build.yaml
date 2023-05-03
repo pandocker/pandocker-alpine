@@ -8,8 +8,8 @@ jobs:
       matrix:
         pandoc: [ 2.19, 3.1, edge-alpine ]
         alpine: [ 3.16.4 ]
-        variant: [ latex, extra ]
-        tlmgr: [ true, false ]
+        variant: [ latex ]
+        tlmgr: [ false ]
         include:
           - pandoc: 2.16
             alpine: 3.12
@@ -46,5 +46,4 @@ jobs:
             pandoc_version=${{matrix.pandoc}}
             pandoc_variant=${{matrix.variant}}
             tlmgr=${{matrix.tlmgr}}
-            lua=${{matrix.lua}}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}
