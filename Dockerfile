@@ -70,7 +70,7 @@ RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
 RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
     py3-six py3-yaml py3-numpy
 
-RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra readline && plantuml -version
+RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra readline readline-dev && plantuml -version
 RUN curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && \
     chmod +x update-tlmgr-latest.sh
 RUN if [ ${tlmgr} = "true" ]; then \
