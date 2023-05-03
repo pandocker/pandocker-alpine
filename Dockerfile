@@ -55,6 +55,7 @@ COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 COPY --from=csv /usr/share/lua/5.4 /usr/share/lua/5.4
 
 ARG tlmgr="false"
+ARG texlive="2022"
 
 RUN apk add --no-cache \
     make \
@@ -71,7 +72,7 @@ RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra
 RUN curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && \
     chmod +x update-tlmgr-latest.sh
 RUN if [ ${tlmgr} = "true" ]; then \
-        tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022/tlnet-final/ ; \
+        tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${txlive}/tlnet-final/ ; \
     else \
         echo "do not run update-tlmgr-latest.sh" && \
         tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet ; \
