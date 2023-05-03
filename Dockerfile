@@ -53,7 +53,7 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY --from=wget-curl /etc/apk/repositories /etc/apk/repositories
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
-COPY --from=csv /usr/share/lua/${lua_version} /usr/share/lua/${lua_version}
+COPY --from=csv /usr/local/share/lua/${lua_version} /usr/local/share/lua/${lua_version}
 
 ARG tlmgr="false"
 ARG texlive="2022"
