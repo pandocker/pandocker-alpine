@@ -6,10 +6,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pandoc: [ 2.19, 3.0.1, 3.1 edge-alpine ]
+        pandoc: [ 2.19, 3.0.1, 3.1, edge-alpine ]
         alpine: [ 3.16.4 ]
         variant: [ latex ]
-        tlmgr: [ false true ]
+        tlmgr: [ false, true ]
         include:
           - pandoc: 2.16
             alpine: 3.12
