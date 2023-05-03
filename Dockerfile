@@ -42,8 +42,8 @@ COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 
-ARG tlmgr
-ARG lua
+ARG tlmgr="false"
+ARG lua="5.3"
 
 RUN apk add --no-cache \
     make \
