@@ -58,7 +58,7 @@ jobs:
             alpine_version=${{matrix.alpine}}
             pandoc_version=${{matrix.pandoc}}
             pandoc_variant=${{matrix.variant}}
-            lua_variant=${{matrix.lua}}
+            lua_version=${{matrix.lua}}
             tlmgr=${{matrix.tlmgr}}
             texlive=${{matrix.texlive}}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}
