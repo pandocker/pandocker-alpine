@@ -30,6 +30,7 @@ jobs:
             variant: latex
             tlmgr: true
             texlive: 2021
+            lua: 5.3
           - pandoc: 2.18
             alpine: 3.14
             variant: latex
