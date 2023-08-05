@@ -2,7 +2,7 @@ ARG ubuntu_version="22.04"
 ARG alpine_version="3.16.4"
 ARG pandoc_version="edge-alpine"
 ARG pandoc_variant="extra"
-ARG nexe_version="4.0.0-rc.2"
+ARG nexe_version="4.0.0-beta.19"
 
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
@@ -102,8 +102,8 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     zxjafont \
     zxjatype && mktexlsr
 
-RUN mkdir -p ".config/pip"
-ADD pip.conf .config/pip/
+RUN mkdir -p "~/.config/pip"
+ADD pip.conf ~/.config/pip/
 
 RUN pip3 install pandoc-imagine svgutils
 
