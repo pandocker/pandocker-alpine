@@ -47,6 +47,7 @@ RUN npm i canvas --build-from-source && \
     nexe --build -i ./node_modules/wavedrom-cli/wavedrom-cli.js -o wavedrom-cli
 
 FROM pandoc/${pandoc_variant}:${pandoc_version} as pandoc
+WORKDIR /root
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 
@@ -100,6 +101,9 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     zref \
     zxjafont \
     zxjatype && mktexlsr
+
+RUN mkdir ".pip"
+ADD pip.conf .pip/
 
 RUN pip3 install pandoc-imagine svgutils
 
