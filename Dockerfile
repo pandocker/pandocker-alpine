@@ -105,11 +105,11 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
 RUN mkdir -p "~/.config/pip"
 ADD pip.conf ~/.config/pip/
 
-RUN pip3 install pandoc-imagine svgutils
+RUN pip3 install --break-system-packages pandoc-imagine svgutils
 
-RUN pip3 install pandocker-lua-filters docx-coreprop-writer
+RUN pip3 install --break-system-packages pandocker-lua-filters docx-coreprop-writer
 
-RUN pip3 install git+https://github.com/k4zuki/pandoc_misc.git@2.16.2
+RUN pip3 install --break-system-packages git+https://github.com/k4zuki/pandoc_misc.git@2.16.2
 
 RUN apk -vv info | sort
 
