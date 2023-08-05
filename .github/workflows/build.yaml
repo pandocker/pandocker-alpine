@@ -12,6 +12,7 @@ jobs:
         tlmgr: [ true ]
         texlive: [ 2022 ]
         lua: [ 5.3 ]
+        pip_opt: [ "" ]
         include:
           - pandoc: 3.1
             alpine: 3.16.4
@@ -25,6 +26,7 @@ jobs:
             tlmgr: false
             texlive: 2023
             lua: 5.4
+            pip_opt: "--break-system-packages"
           - pandoc: 2.16
             alpine: 3.12
             variant: latex
@@ -68,4 +70,5 @@ jobs:
             lua_version=${{matrix.lua}}
             tlmgr=${{matrix.tlmgr}}
             texlive=${{matrix.texlive}}
+            pip_opt=${{matrix.pip_opt}}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}

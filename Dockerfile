@@ -58,6 +58,10 @@ COPY --from=csv /usr/local/share/lua/${lua_version} /usr/local/share/lua/${lua_v
 
 ARG tlmgr="false"
 ARG texlive="2022"
+ARG pip_opt=""
+
+RUN mkdir -p "~/.config/pip"
+ADD pip.conf ~/.config/pip/
 
 RUN apk add --no-cache \
     make \
@@ -102,14 +106,11 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     zxjafont \
     zxjatype && mktexlsr
 
-RUN mkdir -p "~/.config/pip"
-ADD pip.conf ~/.config/pip/
+RUN pip3 install ${pip_opt} pandoc-imagine svgutils
 
-RUN pip3 install --break-system-packages pandoc-imagine svgutils
+RUN pip3 install ${pip_opt} pandocker-lua-filters docx-coreprop-writer
 
-RUN pip3 install --break-system-packages pandocker-lua-filters docx-coreprop-writer
-
-RUN pip3 install --break-system-packages git+https://github.com/k4zuki/pandoc_misc.git@2.16.2
+RUN pip3 install ${pip_opt} git+https://github.com/k4zuki/pandoc_misc.git@2.16.2
 
 RUN apk -vv info | sort
 
