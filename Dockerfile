@@ -12,7 +12,7 @@ FROM alpine:${alpine_version} AS wget-curl
 
 RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
 
-ENV PLANTUML_VERSION 1.2023.6
+ENV PLANTUML_VERSION 1.2023.10
 ENV PLANTUML_DOWNLOAD_URL https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar
 RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     echo "#!/bin/bash" > /usr/local/bin/plantuml && \
