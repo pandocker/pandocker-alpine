@@ -102,8 +102,8 @@ RUN tlmgr update --self && fc-cache -fv && tlmgr install \
     zxjafont \
     zxjatype && mktexlsr
 
-RUN mkdir ".pip"
-ADD pip.conf .pip/
+RUN mkdir -p ".config/pip"
+ADD pip.conf .config/pip/
 
 RUN pip3 install pandoc-imagine svgutils
 
