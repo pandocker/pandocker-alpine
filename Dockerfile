@@ -76,7 +76,6 @@ RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-
     py3-six py3-yaml py3-numpy
 
 RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra readline readline-dev && plantuml -version
-RUN ping -c 5 mirror.ctan.org
 RUN curl --retry 10 -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && \
     chmod +x update-tlmgr-latest.sh
 RUN if [ ${tlmgr} = "true" ]; then \
