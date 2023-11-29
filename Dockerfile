@@ -18,6 +18,8 @@ RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     echo "#!/bin/bash" > /usr/local/bin/plantuml && \
     echo "java -jar /usr/local/bin/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
     chmod +x /usr/local/bin/plantuml
+RUN curl -L -O http://mirrors.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && \
+    chmod +x update-tlmgr-latest.sh && mv update-tlmgr-latest.sh /usr/local/bin/
 
 FROM alpine:edge as csv
 ARG lua_version="5.3"
