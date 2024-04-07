@@ -50,6 +50,7 @@ FROM pandoc/${pandoc_variant}:${pandoc_version} as pandoc
 WORKDIR /root
 
 COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
+COPY src/pandoc_misc/ /tmp/
 
 COPY --from=wget-curl /etc/apk/repositories /etc/apk/repositories
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
@@ -108,7 +109,7 @@ RUN pip3 install ${pip_opt} pandoc-imagine svgutils
 
 RUN pip3 install ${pip_opt} pandocker-lua-filters docx-coreprop-writer
 
-RUN pip3 install ${pip_opt} git+https://github.com/k4zuki/pandoc_misc.git@2.16.2
+RUN pip3 install ${pip_opt} /tmp/pandoc_misc
 
 RUN apk -vv info | sort
 
