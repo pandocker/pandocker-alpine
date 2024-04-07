@@ -49,7 +49,7 @@ RUN npm i canvas --build-from-source && \
 FROM pandoc/${pandoc_variant}:${pandoc_version} as pandoc
 WORKDIR /root
 
-COPY src/BXptool-0.4/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
+COPY src/BXptool/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
 COPY src/pandoc_misc/ /tmp/
 
 COPY --from=wget-curl /etc/apk/repositories /etc/apk/repositories
