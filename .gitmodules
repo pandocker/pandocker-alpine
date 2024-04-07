@@ -1,6 +1,3 @@
 [submodule "src/BXptool"]
 	path = src/BXptool
 	url = https://github.com/zr-tex8r/BXptool.git
-[submodule "src/pandoc_misc"]
-	path = src/pandoc_misc
-	url = https://github.com/K4zuki/pandoc_misc.git
