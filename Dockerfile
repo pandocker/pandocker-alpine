@@ -12,7 +12,7 @@ FROM alpine:${alpine_version} AS wget-curl
 
 RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
 
-ENV PLANTUML_VERSION 1.2023.10
+ENV PLANTUML_VERSION 1.2024.4
 ENV PLANTUML_DOWNLOAD_URL https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar
 RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     echo "#!/bin/bash" > /usr/local/bin/plantuml && \
@@ -71,7 +71,7 @@ RUN apk add --no-cache \
     lua-penlight \
     luarocks${lua_version}
 
-RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git
+RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git rsvg-convert
 
 RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
     py3-six py3-yaml py3-numpy
