@@ -3,6 +3,7 @@ ARG alpine_version="3.16.4"
 ARG pandoc_version="edge-alpine"
 ARG pandoc_variant="extra"
 ARG nexe_version="4.0.0-beta.19"
+ARG rsvg_convert
 
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
@@ -71,7 +72,7 @@ RUN apk add --no-cache \
     lua-penlight \
     luarocks${lua_version}
 
-RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git rsvg-convert
+RUN apk --no-cache add -U make openssl openjdk8 graphviz bash git ${rsvg-convert}
 
 RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-lupa py3-setuptools_scm \
     py3-six py3-yaml py3-numpy

@@ -22,6 +22,7 @@ jobs:
         texlive: [ 2022 ] # TeXLive version
         lua: [ 5.3 ] # lua version
         pip_opt: [ "" ] # pip option on non-OS controlled packages install
+        rsvg_convert: [ "" ]
         include:
           - pandoc: 3.1.13
             alpine: 3.19.1
@@ -30,6 +31,7 @@ jobs:
             texlive: 2024
             lua: 5.4
             pip_opt: "--break-system-packages"
+            rsvg_convert: rsvg-convert
           - pandoc: 3.2
             alpine: 3.19.1
             variant: latex
@@ -37,6 +39,7 @@ jobs:
             texlive: 2024
             lua: 5.4
             pip_opt: "--break-system-packages"
+            rsvg_convert: rsvg-convert
           - pandoc: edge-alpine
             alpine: 3.19.1
             variant: latex
@@ -44,6 +47,7 @@ jobs:
             texlive: 2024
             lua: 5.4
             pip_opt: "--break-system-packages"
+            rsvg_convert: rsvg-convert
           - pandoc: 2.16
             alpine: 3.12
             variant: latex
