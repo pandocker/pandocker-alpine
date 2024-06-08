@@ -86,4 +86,5 @@ jobs:
             tlmgr=${{matrix.tlmgr}}
             texlive=${{matrix.texlive}}
             pip_opt=${{matrix.pip_opt}}
+            rsvg_convert=${{matrix.rsvg_convert}}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}
