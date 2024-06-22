@@ -54,6 +54,15 @@ jobs:
             tlmgr: true
             texlive: 2021
             lua: 5.3
+          - pandoc: 3.2
+            alpine: 3.19.1
+            variant: core
+            tlmgr: false
+            texlive: 2024
+            lua: 5.4
+            pip_opt: "--break-system-packages"
+            rsvg_convert: rsvg-convert
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -89,4 +98,4 @@ jobs:
             texlive=${{matrix.texlive}}
             pip_opt=${{matrix.pip_opt}}
             rsvg_convert=${{matrix.rsvg_convert}}
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pandocker-alpine:${{matrix.pandoc}}-${{matrix.variant}}
