@@ -86,8 +86,7 @@ RUN if [ ${pandoc_variant} = "latex" ] || [ ${pandoc_variant} = "extra" ]; then 
         else \
             echo "do not run update-tlmgr-latest.sh" && \
             tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet ; \
-        fi
-
+        fi ; \
         tlmgr update --self && tlmgr install \
         ascmac \
         background \
