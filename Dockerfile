@@ -1,7 +1,6 @@
 ARG ubuntu_version="22.04"
 ARG alpine_version="3.16.4"
 ARG pandoc_version="edge-alpine"
-ARG pandoc_variant="latex"
 ARG nexe_version="4.0.0-beta.19"
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
@@ -45,6 +44,7 @@ RUN npm i canvas --build-from-source && \
     npm i https://github.com/K4zuki/cli.git && \
     nexe --build -i ./node_modules/wavedrom-cli/wavedrom-cli.js -o wavedrom-cli
 
+ARG pandoc_variant="latex"
 FROM pandoc/${pandoc_variant}:${pandoc_version} as pandoc
 WORKDIR /root
 
