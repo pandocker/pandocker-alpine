@@ -79,8 +79,8 @@ RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-
 RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra readline readline-dev && \
     fc-cache -fv && plantuml -version
 
-RUN if [ ${pandoc_variant} = "latex" ] || [ ${pandoc_variant} = "extra" ]; then \
-        if [ "${tlmgr}" = "true" ]; then \
+RUN if [ ${pandoc_variant} = latex ] || [ ${pandoc_variant} = extra ]; then \
+        if [ ${tlmgr} = true ]; then \
             tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${texlive}/tlnet-final/ ; \
         else \
             echo "do not run update-tlmgr-latest.sh" && \
