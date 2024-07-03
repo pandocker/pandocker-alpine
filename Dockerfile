@@ -1,13 +1,8 @@
 ARG ubuntu_version="22.04"
-ARG alpine_version="3.16.4"
-ARG pandoc_version="edge-alpine"
-ARG pandoc_variant="latex"
-ARG nexe_version="4.0.0-beta.19"
-
-
 FROM ubuntu:${ubuntu_version} AS ricty-getter
 RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
 
+ARG alpine_version="3.16.4"
 FROM alpine:${alpine_version} AS wget-curl
 
 RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
@@ -19,8 +14,8 @@ RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     echo "java -jar /usr/local/bin/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
     chmod +x /usr/local/bin/plantuml
 
-FROM alpine:edge as csv
 ARG lua_version="5.3"
+FROM alpine:edge as csv
 RUN apk add --no-cache \
     make git \
     lua${lua_version}-dev \
@@ -30,6 +25,7 @@ RUN apk add --no-cache \
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && \
     luarocks-${lua_version} make rockspecs/csv-1-1.rockspec
 
+ARG nexe_version="4.0.0-beta.19"
 FROM lansible/nexe:${nexe_version} as wavedrom
 WORKDIR /root
 RUN apk add --update --no-cache \
@@ -46,6 +42,12 @@ RUN npm i canvas --build-from-source && \
     npm i https://github.com/K4zuki/cli.git && \
     nexe --build -i ./node_modules/wavedrom-cli/wavedrom-cli.js -o wavedrom-cli
 
+ARG pandoc_version="edge-alpine"
+ARG pandoc_variant="latex"
+ARG tlmgr="false"
+ARG texlive="2022"
+ARG pip_opt=""
+ARG rsvg_convert=""
 FROM pandoc/${pandoc_variant}:${pandoc_version} as pandoc
 WORKDIR /root
 
@@ -56,11 +58,6 @@ COPY --from=wget-curl /etc/apk/repositories /etc/apk/repositories
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 COPY --from=csv /usr/local/share/lua/${lua_version} /usr/local/share/lua/${lua_version}
-
-ARG tlmgr="false"
-ARG texlive="2022"
-ARG pip_opt=""
-ARG rsvg_convert=""
 
 RUN mkdir -p "~/.config/pip"
 ADD pip.conf ~/.config/pip/
