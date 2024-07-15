@@ -11,14 +11,14 @@ FROM alpine:${alpine_version} AS wget-curl
 
 RUN apk update && apk --no-cache add -U make curl gcc libc-dev libc6-compat
 
-ENV PLANTUML_VERSION 1.2024.4
-ENV PLANTUML_DOWNLOAD_URL https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar
+ENV PLANTUML_VERSION=1.2024.4
+ENV PLANTUML_DOWNLOAD_URL=https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar
 RUN curl -fsSL "${PLANTUML_DOWNLOAD_URL}" -o /usr/local/bin/plantuml.jar && \
     echo "#!/bin/bash" > /usr/local/bin/plantuml && \
     echo "java -jar /usr/local/bin/plantuml.jar -Djava.awt.headless=true \$@" >> /usr/local/bin/plantuml && \
     chmod +x /usr/local/bin/plantuml
 
-FROM alpine:edge as csv
+FROM alpine:edge AS csv
 ARG lua_version="5.3"
 RUN apk add --no-cache \
     make git \
@@ -29,7 +29,7 @@ RUN apk add --no-cache \
 RUN git clone https://github.com/geoffleyland/lua-csv.git && cd lua-csv && \
     luarocks-${lua_version} make rockspecs/csv-1-1.rockspec
 
-FROM lansible/nexe:${nexe_version} as wavedrom
+FROM lansible/nexe:${nexe_version} AS wavedrom
 WORKDIR /root
 RUN apk add --update --no-cache \
     make \
@@ -45,7 +45,7 @@ RUN npm i canvas --build-from-source && \
     npm i https://github.com/K4zuki/cli.git && \
     nexe --build -i ./node_modules/wavedrom-cli/wavedrom-cli.js -o wavedrom-cli
 
-FROM pandoc/${pandoc_variant}:${pandoc_version} as pandoc
+FROM pandoc/${pandoc_variant}:${pandoc_version} AS pandoc
 ARG pandoc_variant="latex"
 WORKDIR /root
 
@@ -61,6 +61,7 @@ ARG tlmgr="false"
 ARG texlive="2022"
 ARG pip_opt=""
 ARG rsvg_convert=""
+ARG lua_version="5.3"
 
 RUN mkdir -p "~/.config/pip"
 ADD pip.conf ~/.config/pip/
@@ -123,6 +124,6 @@ WORKDIR /workdir
 
 VOLUME ["/workdir"]
 
-ENV TZ JST-9
+ENV TZ=JST-9
 ENTRYPOINT [""]
 CMD ["bash"]
