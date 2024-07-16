@@ -47,6 +47,12 @@ RUN npm i canvas --build-from-source && \
 
 FROM pandoc/${pandoc_variant}:${pandoc_version} AS pandoc
 ARG pandoc_variant="latex"
+ARG tlmgr="false"
+ARG texlive="2022"
+ARG pip_opt=""
+ARG rsvg_convert=""
+ARG lua_version="5.3"
+
 WORKDIR /root
 
 COPY src/BXptool/ /opt/texlive/texdir/texmf-dist/tex/latex/BXptool/
@@ -56,12 +62,6 @@ COPY --from=wget-curl /etc/apk/repositories /etc/apk/repositories
 COPY --from=wget-curl /usr/local/bin/ /usr/local/bin/
 COPY --from=wavedrom /root/wavedrom-cli /usr/local/bin/
 COPY --from=csv /usr/local/share/lua/${lua_version} /usr/local/share/lua/${lua_version}
-
-ARG tlmgr="false"
-ARG texlive="2022"
-ARG pip_opt=""
-ARG rsvg_convert=""
-ARG lua_version="5.3"
 
 RUN mkdir -p "~/.config/pip"
 ADD pip.conf ~/.config/pip/
