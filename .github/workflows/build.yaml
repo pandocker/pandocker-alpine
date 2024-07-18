@@ -28,7 +28,7 @@ jobs:
         pip_opt: [ "" ] # pip option on non-OS controlled packages install
         rsvg_convert: [ "" ]
         include:
-          - pandoc: 3.1.13
+          - pandoc: "3.1.13"
             alpine: 3.19.1
             variant: latex
             tlmgr: false
@@ -36,7 +36,7 @@ jobs:
             lua: 5.4
             pip_opt: "--break-system-packages"
             rsvg_convert: rsvg-convert
-          - pandoc: 3.2
+          - pandoc: "3.2"
             alpine: 3.19.1
             variant: latex
             tlmgr: false
@@ -44,7 +44,7 @@ jobs:
             lua: 5.4
             pip_opt: "--break-system-packages"
             rsvg_convert: rsvg-convert
-          - pandoc: edge-alpine
+          - pandoc: "edge-alpine"
             alpine: 3.19.1
             variant: latex
             tlmgr: false
@@ -52,13 +52,7 @@ jobs:
             lua: 5.4
             pip_opt: "--break-system-packages"
             rsvg_convert: rsvg-convert
-          - pandoc: 2.16
-            alpine: 3.12
-            variant: latex
-            tlmgr: true
-            texlive: 2021
-            lua: 5.3
-          - pandoc: 3.2
+          - pandoc: "3.2"
             alpine: 3.19.1
             variant: core
             tlmgr: false
