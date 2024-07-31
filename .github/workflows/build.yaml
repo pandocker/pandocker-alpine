@@ -21,7 +21,7 @@ jobs:
       matrix:
         pandoc: [ 2.19 ] # pandoc version
         alpine: [ 3.16.8 ] # OS version
-        variant: [ latex ] # pandoc image variant
+        variant: [ latex, core ] # pandoc image variant
         tlmgr: [ true ] # `true`: use frozen/outdated TeXLive version and its package server; false: use pre-installed version
         texlive: [ 2022 ] # TeXLive version
         lua: [ 5.3 ] # lua version
