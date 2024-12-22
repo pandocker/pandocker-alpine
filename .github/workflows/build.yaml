@@ -9,6 +9,7 @@
 
 name: Docker Image CI
 on:
+  workflow_dispatch:
   push:
   create:
   schedule:
