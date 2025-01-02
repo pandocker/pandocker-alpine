@@ -43,7 +43,7 @@ jobs:
             rsvg_convert: rsvg-convert
           - pandoc: "3.2"
             alpine: 3.19.1
-            variant: [ latex, core ]
+            variant: latex
             tlmgr: false
             texlive: 2024
             lua: 5.4
