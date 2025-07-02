@@ -108,7 +108,7 @@ jobs:
           push: true
           build-args: |
             ubuntu_version=22.04
-            nexe_version=4.0.0-beta.19
+            nexe_version=4.0.0-rc.6
             alpine_version=${{matrix.alpine}}
             pandoc_version=${{matrix.pandoc}}
             pandoc_variant=${{matrix.variant}}
