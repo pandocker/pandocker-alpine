@@ -2,7 +2,7 @@ ARG ubuntu_version="22.04"
 ARG alpine_version="3.16.4"
 ARG pandoc_version="edge-alpine"
 ARG pandoc_variant="latex"
-ARG nexe_version="4.0.0-rc.4"
+ARG nexe_version="4.0.0-beta.19"
 
 FROM ubuntu:${ubuntu_version} AS ricty-getter
 RUN apt update && apt -y install --no-install-recommends fonts-ricty-diminished
@@ -45,7 +45,6 @@ RUN npm i canvas --build-from-source && \
     npm i https://github.com/K4zuki/cli.git && \
     nexe --build -i ./node_modules/wavedrom-cli/wavedrom-cli.js -o wavedrom-cli
 
-<<<<<<< Updated upstream
 FROM pandoc/${pandoc_variant}:${pandoc_version} AS pandoc
 ARG pandoc_variant="latex"
 ARG tlmgr="false"
@@ -53,9 +52,6 @@ ARG texlive="2022"
 ARG pip_opt=""
 ARG rsvg_convert=""
 ARG lua_version="5.3"
-=======
-FROM pandoc/extra:${pandoc_version} as pandoc
->>>>>>> Stashed changes
 
 WORKDIR /root
 
@@ -85,7 +81,6 @@ RUN apk --no-cache add -U python3 py3-pip py3-pillow py3-reportlab py3-lxml py3-
 RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra readline readline-dev && \
     fc-cache -fv && plantuml -version
 
-<<<<<<< Updated upstream
 RUN if [ ${pandoc_variant} = latex ] || [ ${pandoc_variant} = extra ]; then \
         if [ ${tlmgr} = true ]; then \
             tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${texlive}/tlnet-final/ ; \
@@ -118,40 +113,12 @@ RUN if [ ${pandoc_variant} = latex ] || [ ${pandoc_variant} = extra ]; then \
 
 
 RUN pip3 install ${pip_opt} pandoc-imagine svgutils
-=======
-RUN apk add openjdk8-jre fontconfig ttf-dejavu font-noto-cjk font-noto-cjk-extra
-#RUN curl -L -O http://mirror.ctan.org/systems/texlive/tlnet/update-tlmgr-latest.sh && sh update-tlmgr-latest.sh
-#RUN tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
-RUN tlmgr update --self && fc-cache -fv && tlmgr install \
-    background \
-    bxjscls \
-    fancybox \
-    ifoddpage \
-    lastpage \
-    realscripts\
-    xhfill \
-    xltxtra \
-    zxjafont \
-    zxjatype && mktexlsr
-
-#    ascmac \
-#    ctex \
-#    environ \
-#    everypage \
-#    mdframed \
-#    needspace \
-#    tcolorbox \
-#    trimspaces \
-#    zref \
-
-RUN pip3 install pandoc-imagine svgutils docx-coreprop-writer
-
-RUN pip3 install pandocker-lua-filters
->>>>>>> Stashed changes
 
 RUN pip3 install ${pip_opt} pandocker-lua-filters docx-coreprop-writer
 
 RUN pip3 install ${pip_opt} /tmp/pandoc_misc/
+
+RUN apk -vv info | sort
 
 WORKDIR /workdir
 
