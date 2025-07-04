@@ -36,7 +36,7 @@ jobs:
           - pandoc: "3.1"
             alpine: 3.19.1
             variant: latex
-            tlmgr: false
+            tlmgr: true
             texlive: 2024
             lua: 5.4
             pip_opt: "--break-system-packages"
@@ -44,7 +44,7 @@ jobs:
           - pandoc: "3.2"
             alpine: 3.19.1
             variant: latex
-            tlmgr: false
+            tlmgr: true
             texlive: 2024
             lua: 5.4
             pip_opt: "--break-system-packages"
