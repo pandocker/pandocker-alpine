@@ -1,0 +1,5 @@
+*.md text
+*.sh text eol=lf
+Makefile text eol=lf
+Dockerfile text
+*.py text
