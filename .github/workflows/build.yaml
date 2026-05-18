@@ -32,7 +32,7 @@ jobs:
           - pandoc: "edge-alpine"
             alpine: 3.21.0
             variant: latex
-            tlmgr: false
+            tlmgr: true
             texlive: 2026
             lua: 5.4
             pip_opt: "--break-system-packages"
