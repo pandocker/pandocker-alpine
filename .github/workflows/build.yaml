@@ -30,7 +30,7 @@ jobs:
         rsvg_convert: [ "" ]
         include:
           - pandoc: "edge-alpine"
-            alpine: 3.21.0
+            alpine: 3.24.0
             variant: latex
             tlmgr: true
             texlive: 2026
@@ -54,7 +54,7 @@ jobs:
             pip_opt: "--break-system-packages"
             rsvg_convert: rsvg-convert
           - pandoc: "3.6"
-            alpine: 3.21.0
+            alpine: 3.21.6
             variant: core
             tlmgr: false
             texlive: 2024
@@ -62,7 +62,7 @@ jobs:
             pip_opt: "--break-system-packages"
             rsvg_convert: rsvg-convert
           - pandoc: "3.7"
-            alpine: 3.21.0
+            alpine: 3.21.6
             variant: core
             tlmgr: false
             texlive: 2024
@@ -70,7 +70,7 @@ jobs:
             pip_opt: "--break-system-packages"
             rsvg_convert: rsvg-convert
           - pandoc: "3.8"
-            alpine: 3.21.0
+            alpine: 3.23.3
             variant: core
             tlmgr: false
             texlive: 2025
@@ -78,7 +78,15 @@ jobs:
             pip_opt: "--break-system-packages"
             rsvg_convert: rsvg-convert
           - pandoc: "3.9"
-            alpine: 3.21.0
+            alpine: 3.23.3
+            variant: core
+            tlmgr: false
+            texlive: 2025
+            lua: 5.4
+            pip_opt: "--break-system-packages"
+            rsvg_convert: rsvg-convert
+          - pandoc: "3.10"
+            alpine: 3.24.0
             variant: core
             tlmgr: false
             texlive: 2025
